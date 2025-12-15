@@ -3,7 +3,7 @@ services:
     image: mysql:9.5.0
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_ROOT_HOST: "localhost"
+      MYSQL_ROOT_HOST: "%"
       MYSQL_DATABASE: library_system
       MYSQL_USER: user
       MYSQL_PASSWORD: password
