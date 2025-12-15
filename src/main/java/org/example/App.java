@@ -1,7 +1,19 @@
 package org.example;
 
+import jakarta.persistence.EntityManager;
+import org.example.entity.User;
+import org.example.repository.UserRepository;
+import org.example.service.UserService;
+import org.example.util.JpaUtil;
+
 public class App {
     public static void main(String[] args) {
-        System.out.println("Hello There!");
+        try (EntityManager em = JpaUtil.getEntityManager()) {
+            UserRepository userRepository = new UserRepository(em);
+            UserService userService = new UserService(userRepository);
+
+            User user = new User();
+            userService.createUser(user);
+        }
     }
 }
