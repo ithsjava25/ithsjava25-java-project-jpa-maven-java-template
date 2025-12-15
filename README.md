@@ -1,3 +1,4 @@
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/_uV8Mn8f)
 # 📘 Projektarbete: JPA + Hibernate med GitHub-flöde
 
 Projektet genomförs som antingen en Java CLI-applikation eller med hjälp av JavaFX om ni vill ha ett grafiskt gränssnitt.
