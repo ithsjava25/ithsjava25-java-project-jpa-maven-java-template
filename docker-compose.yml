@@ -1,0 +1,15 @@
+services:
+  myPod:
+    image: mysql:9.5.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: myPodDB
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mypod_data:/var/lib/mysql
+volumes:
+  mypod_data:
