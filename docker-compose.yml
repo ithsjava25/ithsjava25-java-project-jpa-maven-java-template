@@ -11,8 +11,7 @@ services:
       MYSQL_USER: movieuser
       MYSQL_PASSWORD: moviepass
     ports:
-      - "3306:3306"
-    command: --default-authentication-plugin=mysql_native_password
+      - "127.0.0.1:3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
