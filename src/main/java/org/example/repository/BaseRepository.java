@@ -30,4 +30,14 @@ public abstract class BaseRepository <T, ID> {
         }
     }
 
+    protected <R> R executeRead(Function<EntityManager, R> action) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return action.apply(em);
+        } finally {
+            em.close();
+        }
+    }
+
+
 }
