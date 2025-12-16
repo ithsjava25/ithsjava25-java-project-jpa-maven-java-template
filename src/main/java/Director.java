@@ -17,6 +17,7 @@ public class Director {
     String name;
     String country;
     int birthYear;
+    @Column(nullable = true)
     int yearOfDeath;
 
     public int getYearOfDeath() {
