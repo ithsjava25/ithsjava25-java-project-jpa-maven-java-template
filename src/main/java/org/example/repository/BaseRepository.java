@@ -3,6 +3,7 @@ package org.example.repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 public abstract class BaseRepository <T, ID> {
@@ -55,6 +56,10 @@ public abstract class BaseRepository <T, ID> {
             em.remove(em.contains(entity) ? entity : em.merge(entity));
             return null;
         });
+    }
+
+    public Optional<T> findById(ID id) {
+        return executeRead(em -> Optional.ofNullable(em.find(entityClass, id)));
     }
 
 
