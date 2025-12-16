@@ -1,7 +1,6 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,8 +12,10 @@ public class Booking {
     private Long id;
 
     @ManyToOne
-//    @JoinColumn(name="table_id", nullable = false)
-    private BookingTable tableId;
+    @JoinColumn(name="TableId", nullable = false)
+    private Table table;
+
+
 
 //    @ManyToMany(mappedBy = "guest")
 //    @JoinTable(name="guest_id",
@@ -22,14 +23,18 @@ public class Booking {
 //        inverseJoinColumns = @JoinColumn(name= "guest_id"))
 //    private Guest guestId;
 
+
+    @Column(nullable = false)
+    private long tableId;
+
     @Column(name="Booking_Time", nullable = false)
     private LocalDateTime time;
 
     @Column(name="Party", nullable = false)
     private int party;
 
-    public Booking(int tableId, LocalDateTime time, int party){
-        //this.tableId = tableId;
+    public Booking(Long tableId, LocalDateTime time, int party){
+        this.tableId = tableId;
         this.time = time;
         this. party = party;
     }

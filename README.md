@@ -12,7 +12,7 @@ Kommunikation med databasen ska ske med JPA och Hibernate, enligt code first-met
 ### ✅ Vecka 1 – Grundläggning och struktur
 - [x] Klona GitHub-repo
 - [x] Konfigurera persistence.xml eller använd PersistenceConfiguration i kod
-- [ ] Skapa entiteter och verifiera tabellgenerering
+- [x] Skapa entiteter och verifiera tabellgenerering
 - [ ] Lägg till relationer (One-to-Many, Many-to-Many)
 - [ ] Arbeta på feature-branches och använd pull requests för kodgranskning
 
