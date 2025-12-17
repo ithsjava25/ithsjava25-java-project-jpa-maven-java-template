@@ -24,7 +24,7 @@
             <property name="jakarta.persistence.jdbc.driver"
                       value="com.mysql.cj.jdbc.Driver"/>
             <property name="jakarta.persistence.jdbc.url"
-                      value="jdbc:mysql://localhost:3306/mydb?useSSL=false&amp;serverTimezone=UTC"/>
+                      value="jdbc:mysql://localhost:3306/moviedb?useSSL=false&amp;serverTimezone=UTC"/>
             <property name="jakarta.persistence.jdbc.user"
                       value="movieuser"/>
             <property name="jakarta.persistence.jdbc.password"
@@ -35,6 +35,7 @@
                       value="org.hibernate.dialect.MySQLDialect"/>
             <property name="hibernate.hbm2ddl.auto"
                       value="update"/>
+            <property name="hibernate.connection.pool_size" value="5"/>
 
             <!-- Debug -->
             <property name="hibernate.show_sql" value="true"/>
