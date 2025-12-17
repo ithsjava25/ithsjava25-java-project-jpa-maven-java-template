@@ -22,14 +22,12 @@ public class Person {
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     private List<Role> roles = new ArrayList<>();
 
-    // ===== Constructors =====
     public Person() {}
 
     public Person(String name) {
         this.name = name;
     }
 
-    // ===== Getters & Setters =====
     public Long getId() { return id; }
 
     public String getName() { return name; }

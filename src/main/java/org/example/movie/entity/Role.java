@@ -1,9 +1,6 @@
 package org.example.movie.entity;
 
 import jakarta.persistence.*;
-import org.example.movie.entity.Movie;
-import org.example.movie.entity.Person;
-import org.example.movie.entity.RoleType;
 
 @Entity
 @Table(name = "roles")

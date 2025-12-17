@@ -21,7 +21,7 @@ public class Movie {
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     private List<Role> roles = new ArrayList<>();
 
-    public Movie() {}
+    protected Movie() {}
 
     public Movie(String title) {
         this.title = title;
