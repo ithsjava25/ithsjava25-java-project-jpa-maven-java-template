@@ -1,6 +1,6 @@
 package org.example.movie.entity;
 
-ppackage org.example.movie.entity;
+package org.example.movie.entity;
 
 import jakarta.persistence.*;
 import org.example.movie.entity.Movie;
