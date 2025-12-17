@@ -24,7 +24,7 @@ public class Movie {
     @Column(name = "image_url")
     private String imageUrl;
 
-    private Integer releaseYear;
+    private String releaseYear;
     private Double imdbRating;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
@@ -54,8 +54,8 @@ public class Movie {
         this.imageUrl = imageUrl;
     }
 
-    public Integer getReleaseYear() { return releaseYear; }
-    public void setReleaseYear(Integer releaseYear) {
+    public String getReleaseYear() { return releaseYear; }
+    public void setReleaseYear(String releaseYear) {
         this.releaseYear = releaseYear;
     }
 
