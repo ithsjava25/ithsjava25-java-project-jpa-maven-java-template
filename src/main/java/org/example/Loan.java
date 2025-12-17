@@ -1,12 +1,11 @@
 package org.example;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Loan {
@@ -59,4 +58,10 @@ public class Loan {
     public Long getLoanId() {
         return loanId;
     }
+
+    @ManyToOne @JoinColumn (name = "loan_user")
+    private User user;
+
+    @OneToOne(mappedBy = "loan")
+    private Book book;
 }
