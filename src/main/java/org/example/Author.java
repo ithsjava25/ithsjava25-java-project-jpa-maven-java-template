@@ -38,4 +38,7 @@ public class Author {
         return authorId;
     }
 
+    @ManyToMany(mappedBy = "authors")
+    private List<Book> books = new ArrayList<>();
+
 }

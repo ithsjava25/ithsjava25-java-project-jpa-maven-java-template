@@ -1,9 +1,10 @@
 package org.example;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 public class Book {
@@ -12,12 +13,12 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookId;
 
-    private String author;
     private String title;
     private String genre;
     private String description;
     private int isbn;
     private int publishYear;
+
 
     public Book() {
     }
@@ -65,4 +66,14 @@ public class Book {
     public Long getId() {
         return bookId;
     }
+    @ManyToMany @JoinTable(name = "book_author",
+    joinColumns = @JoinColumn(name="bookId"))
+    private List<Author> authors = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "books")
+    private List<Genre> genres = new ArrayList<>();
+
+    @OneToOne @JoinColumn(name = "loaned_book")
+    private Loan loan;
+
 }
