@@ -17,8 +17,17 @@ public class Restaurant {
     private String address;
     private BigDecimal priceRange;
     private double rating;
-    private LocalTime openingTime;
-    private LocalTime closingTime;
+
+    public Restaurant(Long id, String name, String category, String address, BigDecimal priceRange, double rating) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.address = address;
+        this.priceRange = priceRange;
+        this.rating = rating;
+    }
+
+    public Restaurant(){}
 
     public Long getId() {
         return id;
@@ -64,22 +73,6 @@ public class Restaurant {
         this.rating = rating;
     }
 
-    public LocalTime getOpeningTime() {
-        return openingTime;
-    }
-
-    public void setOpeningTime(LocalTime opening_time) {
-        this.openingTime = opening_time;
-    }
-
-    public LocalTime getClosingTime() {
-        return closingTime;
-    }
-
-    public void setClosingTime(LocalTime closing_time) {
-        this.closingTime = closing_time;
-    }
-
     @Override
     public String toString() {
         return "Restaurant{" +
@@ -89,8 +82,6 @@ public class Restaurant {
             ", address='" + address + '\'' +
             ", priceRange=" + priceRange +
             ", rating=" + rating +
-            ", openingTime=" + openingTime +
-            ", closingTime=" + closingTime +
             '}';
     }
 }
