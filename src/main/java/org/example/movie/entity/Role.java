@@ -14,10 +14,6 @@ public class Role {
     @Column(nullable = false)
     private RoleType roleType;
 
-    /**
-     * Used for ACTOR roles (0 = main actor, 1 = second, 2 = third)
-     * Can be null for DIRECTOR
-     */
     private Integer creditOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,12 +24,12 @@ public class Role {
     @JoinColumn(name = "person_id", nullable = false)
     private Person person;
 
-    public Role() {}
+    protected Role() {}
 
     public Role(RoleType roleType, Movie movie, Person person) {
         this.roleType = roleType;
-        this.movie = movie;
-        this.person = person;
+        setMovie(movie);
+        setPerson(person);
     }
 
     public Long getId() { return id; }
@@ -51,10 +47,17 @@ public class Role {
     public Movie getMovie() { return movie; }
     public void setMovie(Movie movie) {
         this.movie = movie;
+        if (movie != null && !movie.getRoles().contains(this)) {
+            movie.getRoles().add(this);
+        }
     }
 
     public Person getPerson() { return person; }
     public void setPerson(Person person) {
         this.person = person;
+        if (person != null && !person.getRoles().contains(this)) {
+            person.getRoles().add(this);
+        }
     }
 }
+
