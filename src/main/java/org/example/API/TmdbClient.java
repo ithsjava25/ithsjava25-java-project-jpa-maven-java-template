@@ -2,6 +2,8 @@ package org.example.API;
 
 import com.google.gson.Gson;
 import io.github.cdimascio.dotenv.Dotenv;
+import org.example.DTO.CreditsDTO;
+import org.example.DTO.MovieDetailsDTO;
 import org.example.DTO.TopRatedResponseDTO;
 
 import java.net.URI;
@@ -53,6 +55,45 @@ public class TmdbClient {
 
         } catch (Exception e) {
             throw new RuntimeException("Could not get top rated movies from TMDB", e);
+        }
+    }
+
+    public MovieDetailsDTO getMovieDetails(int movieId){
+        try {
+            String url = baseUrl + "/movie/" + movieId + "?api_key=" + apiKey;
+
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .GET()
+                .build();
+
+            HttpResponse<String> response =
+                httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return gson.fromJson(response.body(), MovieDetailsDTO.class);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Could not get movie details from TMDB");
+        }
+
+    }
+
+    public CreditsDTO getMovieCredits(int movieId){
+        try {
+            String url = baseUrl + "/movie/" + movieId + "/credits?api_key=" + apiKey;
+
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .GET()
+                .build();
+
+            HttpResponse<String> response =
+                httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return gson.fromJson(response.body(), CreditsDTO.class);
+
+        } catch (Exception e){
+            throw new RuntimeException("Could not get movie credits from TMDB");
         }
     }
 }
