@@ -14,7 +14,6 @@
         <class>org.example.movie.entity.Movie</class>
         <class>org.example.movie.entity.Person</class>
         <class>org.example.movie.entity.Role</class>
-        <class>org.example.movie.entity.RoleType</class>
 
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
