@@ -21,7 +21,7 @@ public class Main {
                 .managedClasses(Film.class, Director.class);
             try (EntityManagerFactory emf = cfg.createEntityManagerFactory()) {
                 emf.runInTransaction(em -> {
-                    //If no Organizations in database, add some
+                    //If no Films in database, add some
                     if (em.createQuery("select count(o) from Film o", Long.class)
                         .getSingleResult() == 0) {
                         Film film1 = new Film();

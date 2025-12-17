@@ -12,19 +12,29 @@ public class Director {
     private Long id;
 
     @OneToMany(mappedBy = "director")
-    private Set<Film> film = new HashSet<>();
+    private Set<Film> films = new HashSet<>();
 
-    String name;
-    String country;
-    int birthYear;
+    private String name;
+    private String country;
+    private int birthYear;
     @Column(nullable = true)
-    int yearOfDeath;
+    private Integer yearOfDeath;
 
-    public int getYearOfDeath() {
+
+
+    public Set<Film> getFilms() {
+        return films;
+    }
+
+    public void setFilms(Set<Film> films) {
+        this.films = films;
+    }
+
+    public Integer getYearOfDeath() {
         return yearOfDeath;
     }
 
-    public void setYearOfDeath(int yearOfDeath) {
+    public void setYearOfDeath(Integer yearOfDeath) {
         this.yearOfDeath = yearOfDeath;
     }
 

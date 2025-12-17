@@ -6,9 +6,10 @@ public class Film {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    String title;
+    private String title;
     @ManyToOne
-    Director director;
+    @JoinColumn(name = "director_id")
+    private Director director;
 
     public Director getDirector() {
         return director;
