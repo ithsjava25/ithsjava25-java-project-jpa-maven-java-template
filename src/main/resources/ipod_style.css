@@ -5,13 +5,13 @@
 
 /* --- SKÄRMEN --- */
 .ipod-screen {
-    -fx-background-color: #98fb98; /* Den klassiska grön-grå färgen */
+    -fx-background-color: #98fb98;
     -fx-border-color: #333;
     -fx-border-width: 3;
     -fx-pref-width: 260px;  /* Fast bredd */
     -fx-pref-height: 180px; /* Fast höjd */
     -fx-max-height: 180px;
-    -fx-font-family: "Lucida Console", Monaco, monospace; /* Retro typsnitt */
+    -fx-font-family: "Lucida Console", Monaco, monospace;
 }
 
 .scroll-pane {
@@ -37,18 +37,18 @@
     -fx-text-fill: #ffffff; /* Vit text */
 }
 
-/* --- KLICKHJULET (Simulering) --- */
 
-/* Den yttre grå ringen */
+
+/* Den yttre ringen */
 .outer-wheel {
     -fx-fill: #dddddd; /* Ljusare grå */
     -fx-stroke: #aaaaaa;
     -fx-stroke-width: 2px;
 }
 
-/* Mittenknappen (Select) */
+/* Mittenknappen  */
 .center-button {
-    -fx-fill: #e5e5e5; /* Mycket ljusgrå */
+    -fx-fill: #e5e5e5;
     -fx-stroke: #aaaaaa;
     -fx-stroke-width: 1px;
 }
@@ -62,7 +62,7 @@
 .wheel-text-menu {
     -fx-font-size: 10pt;
     -fx-font-weight: bold;
-    -fx-translate-y: -70px; /* Flyttar texten uppåt till MENU-positionen */
+    -fx-translate-y: -70px;
 }
 .wheel-text {
     -fx-font-size: 10pt;
@@ -71,13 +71,15 @@
 .wheel-text-play {
     -fx-font-size: 10pt;
     -fx-font-weight: bold;
-    -fx-translate-y: 70px; /* Flyttar texten nedåt till PLAY-positionen */
+    -fx-translate-y: 70px;
 }
-/* Placera de horisontella knapparna */
+
 #ff-button { /* >> */
+
     -fx-translate-x: 70px;
 }
 
 #rew-button { /* << */
+
     -fx-translate-x: -70px;
 }

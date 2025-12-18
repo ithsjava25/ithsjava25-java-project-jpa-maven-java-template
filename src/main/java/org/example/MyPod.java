@@ -25,7 +25,6 @@ import java.util.List;
 public class MyPod extends Application{
 
 
-    // Använd dina existerande komponenter från projektet
     private final SongRepository songRepo = new SongRepositoryImpl();
     private final ArtistRepository artistRepo = new ArtistRepositoryImpl();
     private final AlbumRepository albumRepo = new AlbumRepositoryImpl();
@@ -46,24 +45,24 @@ public class MyPod extends Application{
 
     @Override
     public void start(Stage primaryStage) {
-        // 1. Initiera databasen och hämta data
+        // Initiera databasen och hämta data
         initializeData();
 
-        // 2. Huvudcontainer
+        //Huvudcontainer
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(20));
         root.getStyleClass().add("ipod-body");
 
-        // 3. Skärmen
+        //Skärmen
         ipodScreen = createIpodScreen();
         root.setTop(ipodScreen);
 
-        // 4. Klickhjulet
+        //Klickhjulet
         StackPane clickWheel = createClickWheel();
         root.setBottom(clickWheel);
         BorderPane.setMargin(clickWheel, new Insets(30, 0, 0, 0));
 
-        // 5. Scenen (se till att css-filen ligger i src/main/resources)
+
         Scene scene = new Scene(root, 300, 500);
         try {
             scene.getStylesheets().add(getClass().getResource("/ipod_style.css").toExternalForm());
@@ -80,31 +79,6 @@ public class MyPod extends Application{
         primaryStage.show();
     }
 
-    private void initializeData() {
-        try {
-
-            EntityManagerFactory emf = PersistenceManager.getEntityManagerFactory();
-            if (!emf.isOpen()) {
-                throw new IllegalStateException("EntityManagerFactory is not open");
-            }
-
-            DatabaseInitializer initializer = new DatabaseInitializer(apiClient, songRepo, albumRepo, artistRepo);
-            initializer.init();
-
-
-            // Hämtning från db
-            this.songs = songRepo.findAll();
-            this.artists = artistRepo.findAll();
-            this.albums = albumRepo.findAll();
-
-        } catch (Exception e) {
-            System.err.println("Kunde inte ladda data: " + e.getMessage());
-            // Fallback för att undvika NullPointerException
-            this.songs = new ArrayList<>();
-            this.artists = new ArrayList<>();
-            this.albums = new ArrayList<>();
-        }
-    }
 
     private StackPane createIpodScreen() {
         StackPane screenContainer = new StackPane();
@@ -150,8 +124,8 @@ public class MyPod extends Application{
         menu.getStyleClass().add("wheel-text-menu");
         menu.setOnMouseClicked(e -> showMainMenu());
 
-        Label ff = new Label(">>"); ff.getStyleClass().add("wheel-text");
-        Label rew = new Label("<<"); rew.getStyleClass().add("wheel-text");
+        Label ff = new Label(">>"); ff.getStyleClass().add("wheel-text");ff.setId("ff-button");
+        Label rew = new Label("<<"); rew.getStyleClass().add("wheel-text");rew.setId("rew-button");
         Label play = new Label(">"); play.getStyleClass().add("wheel-text-play");
 
         wheel.getChildren().addAll(outerWheel, centerButton, menu, ff, rew, play);
@@ -237,7 +211,28 @@ public class MyPod extends Application{
         updateMenu();
     }
 
+    // Hämtning från db
+    private void initializeData() {
+        try {
 
+            EntityManagerFactory emf = PersistenceManager.getEntityManagerFactory();
+            if (!emf.isOpen()) {
+                throw new IllegalStateException("EntityManagerFactory is not open");
+            }
+
+            DatabaseInitializer initializer = new DatabaseInitializer(apiClient, songRepo, albumRepo, artistRepo);
+            initializer.init();
+
+            // Repository - Hitta alla
+            this.songs = songRepo.findAll();
+            this.artists = artistRepo.findAll();
+            this.albums = albumRepo.findAll();
+
+        } catch (Exception e) {
+            System.err.println("Kunde inte ladda data: " + e.getMessage());
+
+        }
+    }
 
 }
 
