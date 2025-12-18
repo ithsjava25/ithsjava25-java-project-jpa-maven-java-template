@@ -21,10 +21,13 @@ public class Movie {
     @Column(length = 1000)
     private String description;
 
+    @Column(nullable = false, unique = true)
+    private Integer tmdbId;
+
     @Column(name = "image_url")
     private String imageUrl;
 
-    private String releaseYear;
+    private Integer releaseYear;
     private Double imdbRating;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
@@ -32,8 +35,9 @@ public class Movie {
 
     protected Movie() {}
 
-    public Movie(String title) {
+    public Movie(String title, Integer tmdbId) {
         this.title = title;
+        this.tmdbId = tmdbId;
     }
 
     public Long getId() { return id; }
@@ -54,14 +58,25 @@ public class Movie {
         this.imageUrl = imageUrl;
     }
 
-    public String getReleaseYear() { return releaseYear; }
-    public void setReleaseYear(String releaseYear) {
+    public Integer getReleaseYear() { return releaseYear; }
+    public void setReleaseYear(Integer releaseYear) {
         this.releaseYear = releaseYear;
     }
 
     public Double getImdbRating() { return imdbRating; }
     public void setImdbRating(Double imdbRating) {
         this.imdbRating = imdbRating;
+    }
+
+    public Integer getTmdbId() {
+        return tmdbId;
+    }
+
+    public void setTmdbId(Integer tmdbId) {
+        if (tmdbId == null || tmdbId <= 0) {
+            throw new IllegalArgumentException("tmdbId must be a positive number");
+        }
+        this.tmdbId = tmdbId;
     }
 
     public List<Role> getRoles() { return roles; }
