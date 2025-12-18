@@ -37,6 +37,7 @@ public class Movie {
 
     public Movie(String title, Integer tmdbId) {
         this.title = title;
+        this.tmdbId = tmdbId;
     }
 
     public Long getId() { return id; }
