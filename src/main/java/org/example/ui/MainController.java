@@ -3,7 +3,7 @@ package org.example.ui;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import org.example.service.MovieServices;
-import org.example.entity.Movie;
+import org.example.movie.entity.Movie;
 
 import java.util.List;
 
