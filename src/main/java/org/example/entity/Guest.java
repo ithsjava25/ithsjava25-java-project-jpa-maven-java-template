@@ -23,6 +23,12 @@ public class Guest {
     @Column(name="Contact_info", nullable = false)
     private String contact;
 
+    public Guest(String name, String note, String contact){
+        this.name = name;
+        this.note = note;
+        this.contact = contact;
+    }
+
     public Guest(){}
 
     public void setId(Long id) {

@@ -12,16 +12,16 @@ public class Booking {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="TableId", nullable = false)
+    @JoinColumn(name="tableId", nullable = false)
     private RestaurantTable restaurantTable;
 
 
 
-//    @ManyToMany(mappedBy = "guest")
-//    @JoinTable(name="guest_id",
-//        joinColumns = @JoinColumn(name = "booking_id"),
-//        inverseJoinColumns = @JoinColumn(name= "guest_id"))
-//    private Guest guestId;
+    @ManyToMany(mappedBy = "guest")
+    @JoinTable(name="guest_id",
+        joinColumns = @JoinColumn(name = "booking_id"),
+        inverseJoinColumns = @JoinColumn(name= "guest_id"))
+    private Guest guestId;
 
 
     @Column(nullable = false)
