@@ -11,15 +11,19 @@ public class OpeningHours {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String weekday;
+    @Enumerated(EnumType.ORDINAL)
+    private Weekday weekday;
+
     private LocalTime openingTime;
     private LocalTime closingTime;
 
-    public OpeningHours(Long id, Restaurant restaurant, String weekday, LocalTime openingTime, LocalTime closingTime) {
+    public OpeningHours(Long id, Weekday weekday, LocalTime openingTime, LocalTime closingTime) {
         this.id = id;
         this.weekday = weekday;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
+        if(openingTime.isAfter(closingTime))
+            throw new RuntimeException("Opening time cannot be after closing time");
     }
 
     public OpeningHours(){}
@@ -28,11 +32,11 @@ public class OpeningHours {
         return id;
     }
 
-    public String getWeekday() {
+    public Weekday getWeekday() {
         return weekday;
     }
 
-    public void setWeekday(String weekday) {
+    public void setWeekday(Weekday weekday) {
         this.weekday = weekday;
     }
 
@@ -60,5 +64,15 @@ public class OpeningHours {
             ", openingTime=" + openingTime +
             ", closingTime=" + closingTime +
             '}';
+    }
+
+    enum Weekday{
+        MONDAY,
+        TUESDAY,
+        WEDNESDAY,
+        THURSDAY,
+        FRIDAY,
+        SATURDAY,
+        SUNDAY
     }
 }
