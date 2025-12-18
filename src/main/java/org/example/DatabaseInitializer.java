@@ -3,8 +3,10 @@ package org.example;
 import org.example.entity.Album;
 import org.example.entity.Artist;
 import org.example.entity.Song;
+import org.example.repo.AlbumRepository;
+import org.example.repo.ArtistRepository;
+import org.example.repo.SongRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseInitializer {
@@ -12,10 +14,14 @@ public class DatabaseInitializer {
     private final ItunesApiClient apiClient;
 
     private final SongRepository songRepo;
+    private final AlbumRepository albumRepo;
+    private final ArtistRepository artistRepo;
 
-    public DatabaseInitializer(ItunesApiClient apiClient, SongRepository songRepo) {
+    public DatabaseInitializer(ItunesApiClient apiClient, SongRepository songRepo , AlbumRepository albumRepo, ArtistRepository artistRepo) {
         this.apiClient = apiClient;
         this.songRepo = songRepo;
+        this.albumRepo = albumRepo;
+        this.artistRepo = artistRepo;
     }
 
     public void init() {
@@ -39,13 +45,13 @@ public class DatabaseInitializer {
             try {
                 apiClient.searchSongs(term).forEach(dto -> {
                     Artist ar = Artist.fromDTO(dto);
-                    if (!songRepo.existsByUniqueId(ar)) {
-                        songRepo.save(ar);
+                    if (!artistRepo.existsByUniqueId(ar)) {
+                        artistRepo.save(ar);
                     }
 
                     Album al = Album.fromDTO(dto, ar);
-                    if (!songRepo.existsByUniqueId(al)) {
-                        songRepo.save(al);
+                    if (!albumRepo.existsByUniqueId(al)) {
+                        albumRepo.save(al);
                     }
 
                     Song s = Song.fromDTO(dto, al);
