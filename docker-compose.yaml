@@ -1,0 +1,18 @@
+services:
+  mysql:
+    image: mysql:9.5.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: grupp2
+      MYSQL_PASSWORD: ${PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+volumes:
+  mysql_data:
+
+

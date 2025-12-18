@@ -1,0 +1,17 @@
+services:
+  mysql:
+    image: mysql:9.5.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: test
+      MYSQL_USER: grupp2
+      MYSQL_PASSWORD: morot7
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+
+volumes:
+  mysql_data:
