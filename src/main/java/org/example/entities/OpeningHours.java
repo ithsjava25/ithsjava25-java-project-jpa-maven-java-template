@@ -11,17 +11,12 @@ public class OpeningHours {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "restaurant_id")
-    private Restaurant restaurant;
-
     private String weekday;
     private LocalTime openingTime;
     private LocalTime closingTime;
 
     public OpeningHours(Long id, Restaurant restaurant, String weekday, LocalTime openingTime, LocalTime closingTime) {
         this.id = id;
-        this.restaurant = restaurant;
         this.weekday = weekday;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
@@ -35,14 +30,6 @@ public class OpeningHours {
 
     public String getWeekday() {
         return weekday;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
     }
 
     public void setWeekday(String weekday) {
@@ -69,7 +56,6 @@ public class OpeningHours {
     public String toString() {
         return "OpeningHours{" +
             "id=" + id +
-            ", restaurant=" + restaurant +
             ", weekday='" + weekday + '\'' +
             ", openingTime=" + openingTime +
             ", closingTime=" + closingTime +

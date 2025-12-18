@@ -3,7 +3,8 @@ package org.example.entities;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Restaurant {
@@ -11,6 +12,10 @@ public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToMany
+    @JoinColumn(name = "openingHoursId")
+    private List<OpeningHours> openingHours = new ArrayList<>();
 
     private String name;
     private String category;
