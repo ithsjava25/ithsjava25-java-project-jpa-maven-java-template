@@ -3,7 +3,6 @@ import jakarta.persistence.EntityManagerFactory;
 import javafx.concurrent.Task;
 import javafx.application.Platform;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -53,6 +52,17 @@ public class MyPod extends Application{
 
     //Huvudcontainer
     BorderPane root = new BorderPane();
+        root.setPadding(new Insets(20));
+        root.getStyleClass().add("ipod-body");
+
+        //Skärmen
+        ipodScreen = createIpodScreen();
+        root.setTop(ipodScreen);
+
+        //Klickhjulet
+        StackPane clickWheel = createClickWheel();
+        root.setBottom(clickWheel);
+        BorderPane.setMargin(clickWheel, new Insets(30, 0, 0, 0));
 
     // CodeRabbit Suggestion //
     // Move Initialization to background thread //
@@ -83,18 +93,6 @@ public class MyPod extends Application{
             new Thread(initTask).start();
 
         // --------------------------------//
-
-        root.setPadding(new Insets(20));
-        root.getStyleClass().add("ipod-body");
-
-        //Skärmen
-        ipodScreen = createIpodScreen();
-        root.setTop(ipodScreen);
-
-        //Klickhjulet
-        StackPane clickWheel = createClickWheel();
-        root.setBottom(clickWheel);
-        BorderPane.setMargin(clickWheel, new Insets(30, 0, 0, 0));
 
 
         Scene scene = new Scene(root, 300, 500);
