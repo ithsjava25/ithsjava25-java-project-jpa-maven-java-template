@@ -10,28 +10,43 @@
 
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
+        <!-- Entities -->
+        <class>org.example.movie.entity.Movie</class>
+        <class>org.example.movie.entity.Person</class>
+        <class>org.example.movie.entity.Role</class>
+
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+
         <properties>
 
+            <!-- JDBC -->
             <property name="jakarta.persistence.jdbc.driver"
                       value="com.mysql.cj.jdbc.Driver"/>
             <property name="jakarta.persistence.jdbc.url"
-                      value="jdbc:mysql://localhost:3306/mydb?useSSL=false&amp;serverTimezone=UTC"/>
+                      value="jdbc:mysql://localhost:3306/moviedb?useSSL=false&amp;serverTimezone=UTC"/>
             <property name="jakarta.persistence.jdbc.user"
                       value="movieuser"/>
             <property name="jakarta.persistence.jdbc.password"
                       value="moviepass"/>
 
+            <!-- Hibernate -->
             <property name="hibernate.dialect"
                       value="org.hibernate.dialect.MySQLDialect"/>
-
             <property name="hibernate.hbm2ddl.auto"
                       value="update"/>
+            <property name="hibernate.connection.pool_size" value="5"/>
 
+            <!-- Debug -->
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.highlight_sql" value="true"/>
+
+            <!-- Stabilitet -->
             <property name="hibernate.jdbc.batch_size" value="20"/>
+            <property name="hibernate.jdbc.time_zone" value="UTC"/>
+
         </properties>
 
     </persistence-unit>
 </persistence>
+
