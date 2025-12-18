@@ -17,11 +17,6 @@ public class Person {
     @Column(nullable = false)
     private String name;
 
-    private LocalDate birthDate;
-
-    @Column(name = "image_url")
-    private String imageUrl;
-
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     private List<Role> roles = new ArrayList<>();
 
@@ -35,16 +30,6 @@ public class Person {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-
-    public LocalDate getBirthDate() { return birthDate; }
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getImageUrl() { return imageUrl; }
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 
     public List<Role> getRoles() { return roles; }
 
