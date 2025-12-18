@@ -12,10 +12,6 @@ public class SongRepositoryImpl implements SongRepository {
 
     private final EntityManagerFactory emf = PersistenceManager.getEntityManagerFactory();
 
-    @Override
-    public List<Song> findSongByArtist() {
-        return List.of();
-    }
 
     @Override
     public Long count() {
@@ -38,6 +34,26 @@ public class SongRepositoryImpl implements SongRepository {
     @Override
     public void save(Song song) {
         emf.runInTransaction(em -> em.persist(song));
+    }
+
+    @Override
+    public List<Song> findAll() {
+        return List.of();
+    }
+
+    @Override
+    public List<Song> findByArtist(Artist artist) {
+        return List.of();
+    }
+
+    @Override
+    public List<Song> findByAlbum(Album album) {
+        return List.of();
+    }
+
+    @Override
+    public List<Song> findByGenre(String genre) {
+        return List.of();
     }
 
 
