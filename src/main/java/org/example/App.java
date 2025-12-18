@@ -17,11 +17,12 @@ public class App {
 
             try {
                 em.getTransaction().begin();
-                RestaurantTable table = new RestaurantTable(8, "Table 8");
+                RestaurantTable table = new RestaurantTable(5, "Table 6");
                 em.persist(table);
-                Guest guest = new Guest("John Smith", "N/A", "johnsmith.email.com");
+                Guest guest = new Guest("Johnnathan Smith", "N/A", "johnnysmith.email.com");
                 em.persist(guest);
                 Booking booking = new Booking(table, LocalDateTime.now(), 5);
+                booking.addGuest(guest);
                 em.persist(booking);
                 em.getTransaction().commit();
             } catch (Exception e) {
