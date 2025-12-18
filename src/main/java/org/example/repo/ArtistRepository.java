@@ -10,9 +10,8 @@ public interface ArtistRepository {
 
     void save(Artist artist);
 
-    Long count();
-
     List<Artist> findAll();
 
+    Long count();
 
 }

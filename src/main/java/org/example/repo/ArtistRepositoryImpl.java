@@ -2,13 +2,24 @@ package org.example.repo;
 
 import jakarta.persistence.EntityManagerFactory;
 import org.example.PersistenceManager;
+import org.example.entity.Album;
 import org.example.entity.Artist;
+import org.example.entity.Song;
 
 import java.util.List;
 
-public class ArtistRepositoryImpl implements ArtistRepository{
+public class ArtistRepositoryImpl implements ArtistRepository {
 
     private final EntityManagerFactory emf = PersistenceManager.getEntityManagerFactory();
+
+    @Override
+    public boolean existsByUniqueId(Artist artist) {
+        return emf.callInTransaction(em ->
+            em.createQuery("select count(a) from Artist a where a.artistId = :artistId", Long.class)
+                .setParameter("artistId", artist.getArtistId())
+                .getSingleResult() > 0
+        );
+    }
 
     @Override
     public void save(Artist artist) {
@@ -16,22 +27,16 @@ public class ArtistRepositoryImpl implements ArtistRepository{
     }
 
     @Override
-    public Long count() {
-        return 0L;
-    }
-
-    @Override
     public List<Artist> findAll() {
-        return List.of();
+        return emf.callInTransaction(em ->
+            em.createQuery("select a from Artist a", Artist.class)
+                .getResultList());
     }
 
-
     @Override
-    public boolean existsByUniqueId(Artist artist) {
-        try (var em = emf.createEntityManager()) {
-            return em.createQuery("select count(a) from Artist a where a.artistId = :artistId", Long.class)
-                .setParameter("artistId", artist.getArtistId())
-                .getSingleResult() > 0;
-        }
+    public Long count() {
+        return emf.callInTransaction(em ->
+            em.createQuery("select count(a) from Artist a", Long.class)
+                .getSingleResult());
     }
 }

@@ -7,9 +7,18 @@ import org.example.entity.Artist;
 
 import java.util.List;
 
-public class AlbumRepositoryImpl implements AlbumRepository{
+public class AlbumRepositoryImpl implements AlbumRepository {
 
     private final EntityManagerFactory emf = PersistenceManager.getEntityManagerFactory();
+
+    @Override
+    public boolean existsByUniqueId(Album album) {
+        return emf.callInTransaction(em ->
+            em.createQuery("select count(a) from Album a where a.albumId = :albumId", Long.class)
+                .setParameter("albumId", album.getAlbumId())
+                .getSingleResult() > 0
+        );
+    }
 
     @Override
     public void save(Album album) {
@@ -17,33 +26,34 @@ public class AlbumRepositoryImpl implements AlbumRepository{
     }
 
     @Override
-    public Long count() {
-        return 0L;
-    }
-
-    @Override
     public List<Album> findAll() {
-        return List.of();
+        return emf.callInTransaction(em ->
+            em.createQuery("select a from Album a", Album.class)
+                .getResultList());
     }
 
     @Override
-    public Album findByArtist(Artist artist) {
-        return null;
+    public List<Album> findByArtist(Artist artist) {
+        return emf.callInTransaction(em ->
+            em.createQuery("select a from Album a where a.artist = :artist", Album.class)
+                .setParameter("artist", artist)
+                .getResultList()
+        );
     }
 
     @Override
-    public Album findByGenre(String genre) {
-        return null;
+    public List<Album> findByGenre(String genre) {
+        return emf.callInTransaction(em ->
+            em.createQuery("select a from Album a where a.genre = :genre", Album.class)
+                .setParameter("genre", genre)
+                .getResultList()
+        );
     }
 
     @Override
-    public boolean existsByUniqueId(Album album) {
-        try (var em = emf.createEntityManager()) {
-            return em.createQuery("select count(a) from Album a where a.albumId = :albumId", Long.class)
-                .setParameter("albumId", album.getAlbumId())
-                .getSingleResult() > 0;
-        }
+    public Long count() {
+        return emf.callInTransaction(em ->
+            em.createQuery("select count(a) from Album a", Long.class)
+                .getSingleResult());
     }
-
-
 }

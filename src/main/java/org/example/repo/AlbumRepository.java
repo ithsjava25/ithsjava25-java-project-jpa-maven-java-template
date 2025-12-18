@@ -11,11 +11,11 @@ public interface AlbumRepository {
 
     void save(Album album);
 
-    Long count();
-
     List<Album> findAll();
 
-    Album findByArtist(Artist artist);
+    List<Album> findByArtist(Artist artist);
 
-    Album findByGenre(String genre);
+    List<Album> findByGenre(String genre);
+
+    Long count();
 }

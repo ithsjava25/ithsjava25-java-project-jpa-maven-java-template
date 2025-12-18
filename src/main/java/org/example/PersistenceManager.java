@@ -9,8 +9,6 @@ import org.hibernate.jpa.HibernatePersistenceConfiguration;
 
 import java.util.List;
 
-
-
 public class PersistenceManager {
 
     private static final EntityManagerFactory emf;
@@ -40,10 +38,7 @@ public class PersistenceManager {
         return emf;
     }
 
-
-
-
-//Not invented here!!
+    //Not invented here!!
     private static List<Class<?>> getEntities(String pkg) {
         List<Class<?>> entities;
         try (ScanResult scanResult =
