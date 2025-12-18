@@ -4,6 +4,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import org.example.entity.Booking;
+import org.example.entity.Guest;
+import org.example.entity.RestaurantTable;
 
 import java.time.LocalDateTime;
 
@@ -15,9 +17,11 @@ public class App {
 
             try {
                 em.getTransaction().begin();
-                //BookingTable bookingTable = new BookingTable(6, 8);
-                Booking booking = new Booking();
-                //Guest guest = new Guest();
+                RestaurantTable table = new RestaurantTable(8, "Table 8");
+                em.persist(table);
+                Guest guest = new Guest("John Smith", "N/A", "johnsmith.email.com");
+                em.persist(guest);
+                Booking booking = new Booking(table, LocalDateTime.now(), 5);
                 em.persist(booking);
                 em.getTransaction().commit();
             } catch (Exception e) {

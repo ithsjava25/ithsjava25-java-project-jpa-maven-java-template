@@ -14,7 +14,7 @@ public class RestaurantTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-   @OneToMany(mappedBy = "restaurant_table", cascade = CascadeType.PERSIST)
+   @OneToMany(mappedBy = "table", cascade = CascadeType.PERSIST)
    private List<Booking> bookings = new ArrayList<>();
 
 
