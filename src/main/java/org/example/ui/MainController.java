@@ -12,7 +12,11 @@ public class MainController {
     @FXML
     private ListView<String> movieList;
 
-    private final MovieServices movieServices = new MovieServices();
+    private final MovieServices movieServices;
+
+    public MainController(MovieServices movieServices) {
+        this.movieServices = movieServices;
+    }
 
     @FXML
     private void loadMovies() {

@@ -12,7 +12,7 @@ public class MainApp {
                 getClass().getResource("/MainView.fxml")
             );
 
-            Scene scene = new Scene(loader.load(), 1920, 1080);
+            Scene scene = new Scene(loader.load());
 
             stage.setTitle("Movie Database App");
             stage.setScene(scene);
