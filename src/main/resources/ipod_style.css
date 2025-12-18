@@ -1,0 +1,83 @@
+/* Generella Färger */
+.ipod-body {
+    -fx-background-color: #D3D3D3; /* Ljusgrå kropp */
+}
+
+/* --- SKÄRMEN --- */
+.ipod-screen {
+    -fx-background-color: #98fb98; /* Den klassiska grön-grå färgen */
+    -fx-border-color: #333;
+    -fx-border-width: 3;
+    -fx-pref-width: 260px;  /* Fast bredd */
+    -fx-pref-height: 180px; /* Fast höjd */
+    -fx-max-height: 180px;
+    -fx-font-family: "Lucida Console", Monaco, monospace; /* Retro typsnitt */
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.screen-title {
+    -fx-text-fill: #333333;
+    -fx-font-size: 14pt;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 5px 0; /* Marginal under titeln */
+}
+
+.menu-item {
+    -fx-text-fill: #333333; /* Svart text */
+    -fx-font-size: 11pt;
+    -fx-padding: 2px 5px 2px 5px;
+}
+
+/* Den inverterade, markerade raden */
+.selected-item {
+    -fx-background-color: #333333; /* Svart bakgrund */
+    -fx-text-fill: #ffffff; /* Vit text */
+}
+
+/* --- KLICKHJULET (Simulering) --- */
+
+/* Den yttre grå ringen */
+.outer-wheel {
+    -fx-fill: #dddddd; /* Ljusare grå */
+    -fx-stroke: #aaaaaa;
+    -fx-stroke-width: 2px;
+}
+
+/* Mittenknappen (Select) */
+.center-button {
+    -fx-fill: #e5e5e5; /* Mycket ljusgrå */
+    -fx-stroke: #aaaaaa;
+    -fx-stroke-width: 1px;
+}
+
+/* Text på hjulet (MENU, >>, <<, >) */
+.wheel-text {
+    -fx-fill: #333333;
+    -fx-font-size: 10pt;
+    -fx-font-weight: bold;
+}
+.wheel-text-menu {
+    -fx-font-size: 10pt;
+    -fx-font-weight: bold;
+    -fx-translate-y: -70px; /* Flyttar texten uppåt till MENU-positionen */
+}
+.wheel-text {
+    -fx-font-size: 10pt;
+    -fx-font-weight: bold;
+}
+.wheel-text-play {
+    -fx-font-size: 10pt;
+    -fx-font-weight: bold;
+    -fx-translate-y: 70px; /* Flyttar texten nedåt till PLAY-positionen */
+}
+/* Placera de horisontella knapparna */
+#ff-button { /* >> */
+    -fx-translate-x: 70px;
+}
+
+#rew-button { /* << */
+    -fx-translate-x: -70px;
+}
