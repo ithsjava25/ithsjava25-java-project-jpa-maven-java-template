@@ -8,8 +8,12 @@ public class MainApp {
 
     public void start(Stage stage) {
         try {
+                var fxmlUrl = getClass().getResource("/MainView.fxml");
+                if (fxmlUrl == null) {
+                throw new IllegalStateException("Cannot find FXML resource: /MainView.fxml");
+                }
             FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/MainView.fxml")
+                fxmlUrl
             );
 
             Scene scene = new Scene(loader.load());
@@ -20,6 +24,12 @@ public class MainApp {
 
         } catch (Exception e) {
             e.printStackTrace();
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
+                javafx.scene.control.Alert.AlertType.ERROR,
+                "Failed to load the application UI: " + e.getMessage()
+            );
+            alert.showAndWait();
+            throw new RuntimeException("UI initialization failed", e);
         }
     }
 }
