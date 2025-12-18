@@ -1,14 +1,13 @@
 package org.example;
 
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+import org.example.util.JPAUtil;
 
 public class App {
 
     static void main(String[] args) {
-        EntityManagerFactory emf =
-            Persistence.createEntityManagerFactory("myPU");
 
-        emf.close();
+        JPAUtil.inTransaction(em -> {
+            System.out.println("Database schema initialized");
+        });
     }
 }
