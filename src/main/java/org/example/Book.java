@@ -16,7 +16,7 @@ public class Book {
     private String title;
     private String genre;
     private String description;
-    private int isbn;
+    private String isbn;
     private int publishYear;
 
 
@@ -31,11 +31,11 @@ public class Book {
         this.publishYear = publishYear;
     }
 
-    public int getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(int isbn) {
+    public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 
