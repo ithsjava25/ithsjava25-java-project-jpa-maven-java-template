@@ -1,95 +1,125 @@
-/* Generella Färger */
+/* --- GEMENSAMMA GRUNDER --- */
 .ipod-body {
-    -fx-background-color: #D3D3D3; /* Ljusgrå kropp */
+    -fx-background-color: #D3D3D3;
 }
 
-/* --- SKÄRMEN --- */
+/* --- MYPOD: SKÄRMEN (iPod-stil) --- */
 .ipod-screen {
     -fx-background-color: white;
     -fx-border-color: #999;
     -fx-border-width: 2;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-pref-width: 260px;  /* Fast bredd */
-    -fx-pref-height: 180px; /* Fast höjd */
-    -fx-max-height: 180px;
-    -fx-font-family: "Lucida Console", Monaco, monospace;
-}
-
-.scroll-pane {
-    -fx-background-color: transparent;
 }
 
 .screen-title {
     -fx-text-fill: #333333;
     -fx-font-size: 14pt;
     -fx-font-weight: bold;
-    -fx-padding: 0 0 5px 0; /* Marginal under titeln */
+    -fx-padding: 0 0 5px 0;
     -fx-border-color: #ccc;
     -fx-border-width: 0 0 1 0;
 }
 
 .menu-item {
-    -fx-text-fill: #333333; /* Svart text */
+    -fx-text-fill: #333333;
     -fx-font-size: 11pt;
     -fx-padding: 2px 5px 2px 5px;
+    -fx-font-family: "Lucida Console";
 }
 
-/* Den inverterade, markerade raden */
 .selected-item {
-    -fx-background-color: #333333; /* Svart bakgrund */
-    -fx-text-fill: #ffffff; /* Vit text */
+    -fx-background-color: #333333;
+    -fx-text-fill: #ffffff;
 }
 
-
-
-/* Den yttre ringen */
+/* --- MYPOD: KLICKHJULET --- */
 .outer-wheel {
-    /* Samma bakgrund som iTunes-knapparna */
     -fx-fill: linear-gradient(#eee, #ccc);
-
-    /* Samma ram (stroke) som iTunes-knapparna */
     -fx-stroke: #888;
-    -fx-stroke-width: 1;
-
-    /* Ger en mjukare look */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
 }
 
 .center-button {
-    /* Gör även mittknappen matchande men kanske lite mörkare */
     -fx-fill: linear-gradient(#ddd, #bbb);
     -fx-stroke: #777;
 }
 
-/* Text på hjulet (MENU, >>, <<, >) */
-.wheel-text {
+.wheel-text, .wheel-text-menu, .wheel-text-play {
     -fx-fill: #333333;
-    -fx-font-size: 10pt;
+    -fx-font-family: "Arial";
     -fx-font-weight: bold;
 }
-.wheel-text-menu {
-    -fx-font-size: 10pt;
+
+/* Positionering av texter på hjulet */
+.wheel-text-menu { -fx-translate-y: -70px; -fx-font-size: 10pt; }
+.wheel-text-play { -fx-translate-y: 70px; -fx-font-size: 10pt; }
+#ff-button       { -fx-translate-x: 70px; -fx-font-size: 12pt; }
+#rew-button      { -fx-translate-x: -70px; -fx-font-size: 12pt; }
+
+/* --- ITUNES: PANELER & KONTROLLER --- */
+.top-panel {
+    -fx-background-color: linear-gradient(to bottom, #dcdcdc, #bebebe);
+    -fx-border-color: #999;
+    -fx-border-width: 0 0 1 0;
+}
+
+.bottom-panel {
+    -fx-background-color: linear-gradient(to bottom, #dcdcdc, #bebebe);
+    -fx-border-color: #999;
+    -fx-border-width: 1 0 0 0; /* En mörkare linje i överkant */
+    -fx-padding: 10;
+}
+
+.itunes-search {
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: #aaa;
+    -fx-background-color: white;
+}
+
+.itunes-button {
+    -fx-background-radius: 50;
+    -fx-min-width: 35;
+    -fx-min-height: 35;
+}
+
+.list-control-button {
+    -fx-min-width: 30px;
+
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
+
+    /* Ta bort inre marginaler så tecknet får plats */
+    -fx-padding: 0;
+
+    /* Centrera tecknet */
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+
+    -fx-font-size: 16px; /* Justera storleken på tecknet här */
     -fx-font-weight: bold;
-    -fx-translate-y: -70px;
-}
-.wheel-text {
-    -fx-font-size: 10pt;
-    -fx-font-weight: bold;
-}
-.wheel-text-play {
-    -fx-font-size: 10pt;
-    -fx-font-weight: bold;
-    -fx-translate-y: 70px;
+
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #999;
 }
 
-#ff-button { /* >> */
-
-    -fx-translate-x: 70px;
+/* iTunes LCD */
+.lcd-background {
+    -fx-fill: white;
+    -fx-stroke: gray;
+    -fx-arc-width: 10;
+    -fx-arc-height: 10;
 }
 
-#rew-button { /* << */
+.lcd-title { -fx-font-family: "Lucida Console"; -fx-font-weight: bold; }
+.lcd-artist { -fx-fill: darkslategray; -fx-font-family: "Lucida Console"; }
 
-    -fx-translate-x: -70px;
+/* iTunes Tabell och lista */
+.source-list, .song-table {
+    -fx-font-family: "Lucida Console";
 }
-
+.source-list {
+    -fx-background-color: #ebf1f7;
+    -fx-control-inner-background: #ebf1f7;
+}
