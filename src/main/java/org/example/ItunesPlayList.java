@@ -165,7 +165,7 @@ public class ItunesPlayList {
         TableColumn<DisplaySong, String> albumCol = new TableColumn<>("Album");
         albumCol.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().album));
 
-        TableColumn<DisplaySong, String> timeCol = new TableColumn<>("Tid");
+        TableColumn<DisplaySong, String> timeCol = new TableColumn<>("Längd");
         timeCol.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().time));
 
         songTable.getColumns().clear();
