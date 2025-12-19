@@ -5,9 +5,11 @@
 
 /* --- SKÄRMEN --- */
 .ipod-screen {
-    -fx-background-color: #98fb98;
-    -fx-border-color: #333;
-    -fx-border-width: 3;
+    -fx-background-color: white;
+    -fx-border-color: #999;
+    -fx-border-width: 2;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
     -fx-pref-width: 260px;  /* Fast bredd */
     -fx-pref-height: 180px; /* Fast höjd */
     -fx-max-height: 180px;
@@ -23,6 +25,8 @@
     -fx-font-size: 14pt;
     -fx-font-weight: bold;
     -fx-padding: 0 0 5px 0; /* Marginal under titeln */
+    -fx-border-color: #ccc;
+    -fx-border-width: 0 0 1 0;
 }
 
 .menu-item {
@@ -41,16 +45,21 @@
 
 /* Den yttre ringen */
 .outer-wheel {
-    -fx-fill: #dddddd; /* Ljusare grå */
-    -fx-stroke: #aaaaaa;
-    -fx-stroke-width: 2px;
+    /* Samma bakgrund som iTunes-knapparna */
+    -fx-fill: linear-gradient(#eee, #ccc);
+
+    /* Samma ram (stroke) som iTunes-knapparna */
+    -fx-stroke: #888;
+    -fx-stroke-width: 1;
+
+    /* Ger en mjukare look */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
 }
 
-/* Mittenknappen  */
 .center-button {
-    -fx-fill: #e5e5e5;
-    -fx-stroke: #aaaaaa;
-    -fx-stroke-width: 1px;
+    /* Gör även mittknappen matchande men kanske lite mörkare */
+    -fx-fill: linear-gradient(#ddd, #bbb);
+    -fx-stroke: #777;
 }
 
 /* Text på hjulet (MENU, >>, <<, >) */

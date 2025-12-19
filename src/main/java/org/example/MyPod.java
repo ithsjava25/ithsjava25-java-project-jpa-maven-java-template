@@ -1,4 +1,5 @@
 package org.example;
+
 import jakarta.persistence.EntityManagerFactory;
 import javafx.concurrent.Task;
 import javafx.application.Platform;
@@ -15,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.example.entity.Album;
 import org.example.entity.Artist;
@@ -24,8 +26,7 @@ import org.example.repo.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyPod extends Application{
-
+public class MyPod extends Application {
 
     private final SongRepository songRepo = new SongRepositoryImpl();
     private final ArtistRepository artistRepo = new ArtistRepositoryImpl();
@@ -43,57 +44,47 @@ public class MyPod extends Application{
     private int selectedIndex = 0;
     private VBox screenContent;
     private StackPane ipodScreen;
+    private ScrollPane scrollPane; // Sparas som fält för att styra scroll
     private boolean isMainMenu = true;
 
     @Override
     public void start(Stage primaryStage) {
-//        // Initiera databasen och hämta data
-//        initializeData();
-
-    //Huvudcontainer
-    BorderPane root = new BorderPane();
+        // Huvudcontainer
+        BorderPane root = new BorderPane();
         root.setPadding(new Insets(20));
         root.getStyleClass().add("ipod-body");
 
-        //Skärmen
+        // Skärmen
         ipodScreen = createIpodScreen();
         root.setTop(ipodScreen);
 
-        //Klickhjulet
+        // Klickhjulet
         StackPane clickWheel = createClickWheel();
         root.setBottom(clickWheel);
         BorderPane.setMargin(clickWheel, new Insets(30, 0, 0, 0));
 
-    // CodeRabbit Suggestion //
-    // Move Initialization to background thread //
+        // Ladda data i bakgrunden
+        Task<Void> initTask = new Task<>() {
+            @Override
+            protected Void call() {
+                initializeData();
+                return null;
+            }
+        };
 
-    // Initialize data in background
-    Task<Void> initTask = new Task<>() {
+        initTask.setOnSucceeded(e -> {
+            if (isMainMenu) showMainMenu();
+        });
 
-    @Override
-    protected Void call() {
-        initializeData();
-        return null;
-            }};
-
-    initTask.setOnSucceeded(e -> {
-        // Refresh UI after data loads
-         if (isMainMenu) {
-             showMainMenu();}
-                    });
-
-    initTask.setOnFailed(e -> {
+        initTask.setOnFailed(e -> {
             Platform.runLater(() -> {
-                  Label error = new Label("Failed to load data: " + initTask.getException().getMessage());
-                  error.setStyle("-fx-text-fill: red;");
-                  screenContent.getChildren().add(error);
-                  });
-                  });
+                Label error = new Label("Failed to load data.");
+                error.setStyle("-fx-text-fill: red;");
+                screenContent.getChildren().add(error);
+            });
+        });
 
-            new Thread(initTask).start();
-
-        // --------------------------------//
-
+        new Thread(initTask).start();
 
         Scene scene = new Scene(root, 300, 500);
         try {
@@ -103,7 +94,7 @@ public class MyPod extends Application{
         }
 
         setupNavigation(scene);
-        updateMenu();
+        showMainMenu(); // Initiera första vyn
 
         primaryStage.setTitle("myPod");
         primaryStage.setScene(scene);
@@ -111,32 +102,30 @@ public class MyPod extends Application{
         primaryStage.show();
     }
 
-
     private StackPane createIpodScreen() {
         StackPane screenContainer = new StackPane();
         screenContainer.getStyleClass().add("ipod-screen");
 
-        // Skapa ScrollPane
-        ScrollPane scrollPane = new ScrollPane();
+        double width = 260;
+        double height = 180;
+        screenContainer.setPrefSize(width, height);
+        screenContainer.setMaxSize(width, height);
 
-        // Innehållet (VBox)
-        screenContent = new VBox(5);
+        Rectangle clip = new Rectangle(width, height);
+        clip.setArcWidth(15);
+        clip.setArcHeight(15);
+        screenContainer.setClip(clip);
+
+        scrollPane = new ScrollPane();
+        screenContent = new VBox(2); // Lite mindre mellanrum för listor
         screenContent.setAlignment(Pos.TOP_LEFT);
         screenContent.setPadding(new Insets(10, 5, 10, 5));
 
-        // Koppla ihop dem
         scrollPane.setContent(screenContent);
-
-        // Inställningar för att dölja scrollbars och fixa storleken
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Ingen horisontell scroll
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Dölj vertikal scrollbar
-        scrollPane.setFitToWidth(true); // Se till att VBoxen fyller bredden
-        scrollPane.setPannable(true);   // Gör det möjligt att "dra" med musen om man vill
-
-        // Gör ScrollPane genomskinlig så att CSS-bakgrunden på ipod-screen syns
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setFitToWidth(true);
         scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
-
-        showMainMenu();
 
         screenContainer.getChildren().add(scrollPane);
         return screenContainer;
@@ -156,8 +145,8 @@ public class MyPod extends Application{
         menu.getStyleClass().add("wheel-text-menu");
         menu.setOnMouseClicked(e -> showMainMenu());
 
-        Label ff = new Label(">>"); ff.getStyleClass().add("wheel-text");ff.setId("ff-button");
-        Label rew = new Label("<<"); rew.getStyleClass().add("wheel-text");rew.setId("rew-button");
+        Label ff = new Label(">>"); ff.getStyleClass().add("wheel-text"); ff.setId("ff-button");
+        Label rew = new Label("<<"); rew.getStyleClass().add("wheel-text"); rew.setId("rew-button");
         Label play = new Label(">"); play.getStyleClass().add("wheel-text-play");
 
         wheel.getChildren().addAll(outerWheel, centerButton, menu, ff, rew, play);
@@ -171,15 +160,21 @@ public class MyPod extends Application{
                 return;
             }
 
-            if (!isMainMenu) return;
+            int totalItems = menuLabels.size();
+            if (totalItems == 0) return;
 
             int newIndex = selectedIndex;
+
             if (event.getCode() == KeyCode.DOWN) {
-                newIndex = (selectedIndex + 1) % mainMenu.size();
+                newIndex = (selectedIndex + 1) % totalItems;
             } else if (event.getCode() == KeyCode.UP) {
-                newIndex = (selectedIndex - 1 + mainMenu.size()) % mainMenu.size();
+                newIndex = (selectedIndex - 1 + totalItems) % totalItems;
             } else if (event.getCode() == KeyCode.ENTER) {
-                showScreen(mainMenu.get(selectedIndex));
+                if (isMainMenu) {
+                    showScreen(mainMenu.get(selectedIndex));
+                } else {
+                    handleSelection(menuLabels.get(selectedIndex).getText());
+                }
                 return;
             }
 
@@ -195,16 +190,33 @@ public class MyPod extends Application{
             Label label = menuLabels.get(i);
             if (i == selectedIndex) {
                 label.getStyleClass().add("selected-item");
+                ensureVisible(label); // Scrolla till det markerade objektet
             } else {
                 label.getStyleClass().remove("selected-item");
             }
         }
     }
 
+    // Metod för att scrolla ScrollPane automatiskt
+    private void ensureVisible(Label node) {
+        Platform.runLater(() -> {
+            double contentHeight = screenContent.getBoundsInLocal().getHeight();
+            double viewportHeight = scrollPane.getViewportBounds().getHeight();
+            double nodeY = node.getBoundsInParent().getMinY();
+
+            if (contentHeight > viewportHeight) {
+                // Beräkna positionen proportionellt
+                double scrollTarget = nodeY / (contentHeight - viewportHeight);
+                scrollPane.setVvalue(Math.min(1.0, Math.max(0.0, scrollTarget)));
+            }
+        });
+    }
+
     private void showScreen(String screenName) {
         screenContent.getChildren().clear();
-        isMainMenu = false;
         menuLabels.clear();
+        isMainMenu = false;
+        selectedIndex = 0;
 
         Label screenTitle = new Label(screenName);
         screenTitle.getStyleClass().add("screen-title");
@@ -212,69 +224,73 @@ public class MyPod extends Application{
 
         switch (screenName) {
             case "Songs" -> {
-                if (songs != null) songs.forEach(s -> addMenuItem(s.getTitle()));
-                else addMenuItem("No songs available");
+                if (songs != null && !songs.isEmpty()) {
+                    songs.forEach(s -> addMenuItem(s.getTitle()));
+                } else addMenuItem("No songs found");
             }
             case "Artists" -> {
-                if (artists != null) artists.forEach(a -> addMenuItem(a.getName()));
-                else addMenuItem("No artists available");
+                if (artists != null && !artists.isEmpty()) {
+                    artists.forEach(a -> addMenuItem(a.getName()));
+                } else addMenuItem("No artists found");
             }
             case "Albums" -> {
-               if (albums != null) albums.forEach(al -> addMenuItem(al.getName()));
-               else addMenuItem("No albums available");
+                if (albums != null && !albums.isEmpty()) {
+                    albums.forEach(al -> addMenuItem(al.getName()));
+                } else addMenuItem("No albums found");
             }
-            case "Playlists" -> addMenuItem("Inga spellistor skapade");
+            case "Playlists" -> {
+                openMusicPlayer();
+                return;
+            }
         }
+        updateMenu();
     }
 
     private void addMenuItem(String text) {
         Label label = new Label(text);
         label.getStyleClass().add("menu-item");
+        label.setMaxWidth(Double.MAX_VALUE); // Gör att hela raden blir markerad
+        menuLabels.add(label);
         screenContent.getChildren().add(label);
     }
 
     private void showMainMenu() {
         screenContent.getChildren().clear();
-        isMainMenu = true;
         menuLabels.clear();
+        isMainMenu = true;
+        selectedIndex = 0;
 
         Label title = new Label("myPod");
         title.getStyleClass().add("screen-title");
         screenContent.getChildren().add(title);
 
         for (String item : mainMenu) {
-            Label label = new Label(item);
-            label.getStyleClass().add("menu-item");
-            menuLabels.add(label);
-            screenContent.getChildren().add(label);
+            addMenuItem(item);
         }
-        selectedIndex = 0;
         updateMenu();
     }
 
-    // Hämtning från db
+    private void handleSelection(String selection) {
+        // Här kan du lägga till logik för att spela låten eller öppna albumet
+        System.out.println("User selected: " + selection);
+    }
+
+    private void openMusicPlayer() {
+        ItunesPlayList itunesPlayList = new ItunesPlayList();
+        itunesPlayList.showLibrary(this.songs);
+    }
+
     private void initializeData() {
         try {
-
             EntityManagerFactory emf = PersistenceManager.getEntityManagerFactory();
-            if (!emf.isOpen()) {
-                throw new IllegalStateException("EntityManagerFactory is not open");
-            }
-
             DatabaseInitializer initializer = new DatabaseInitializer(apiClient, songRepo, albumRepo, artistRepo);
             initializer.init();
 
-            // Repository - Hitta alla
             this.songs = songRepo.findAll();
             this.artists = artistRepo.findAll();
             this.albums = albumRepo.findAll();
-
         } catch (Exception e) {
             System.err.println("Kunde inte ladda data: " + e.getMessage());
-            throw new RuntimeException("Kunde inte ladda data: " + e);
         }
     }
-
-
 }
-
