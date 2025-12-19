@@ -3,13 +3,11 @@ package org.example;
 import jakarta.persistence.*;
 
 public class App {
-     static void main(String[] args) {
+    static void main(String[] args) {
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("library_system");
+        try (EntityManagerFactory emf = Persistence.createEntityManagerFactory("library_system");
+             EntityManager em = emf.createEntityManager()) {
 
-        EntityManager em = emf.createEntityManager();
-
-        try {
             em.getTransaction().begin();
 
             User user = new User();
@@ -22,13 +20,9 @@ public class App {
 
             em.persist(user);
 
-
             em.getTransaction().commit();
-
-        } finally {
-            em.close();
-            emf.close();
         }
     }
 }
+
 
