@@ -121,7 +121,7 @@ public class MyPod extends Application {
 
         primaryStage.setTitle("myPod");
         primaryStage.setScene(scene);
-        primaryStage.setResizable(false); // En iPod ändrar inte storlek
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
