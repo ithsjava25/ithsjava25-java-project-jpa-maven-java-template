@@ -56,7 +56,7 @@ public class MyPod extends Application {
     // --- GUI-TILLSTÅND ---
     private int selectedIndex = 0;      // Håller koll på vilket menyval som är markerat just nu
     private VBox screenContent;         // Behållaren för texten/listan inuti "skärmen"
-    private StackPane ipodScreen;       // Själva skärm-containern
+    private StackPane myPodScreen;       // Själva skärm-containern
     private ScrollPane scrollPane;      // Gör att vi kan scrolla om listan är lång
     private boolean isMainMenu = true;  // Flagga för att veta om vi är i huvudmenyn eller en undermeny
 
@@ -69,8 +69,8 @@ public class MyPod extends Application {
         root.getStyleClass().add("ipod-body"); // CSS-klass för själva iPod-kroppen
 
         // 1. Skapa och placera skärmen högst upp
-        ipodScreen = createIpodScreen();
-        root.setTop(ipodScreen);
+        myPodScreen = createMyPodScreen();
+        root.setTop(myPodScreen);
 
         // 2. Skapa och placera klickhjulet längst ner
         StackPane clickWheel = createClickWheel();
@@ -128,7 +128,7 @@ public class MyPod extends Application {
     /**
      * Skapar den visuella skärmen (den "lysande" rutan).
      */
-    private StackPane createIpodScreen() {
+    private StackPane createMyPodScreen() {
         StackPane screenContainer = new StackPane();
         screenContainer.getStyleClass().add("ipod-screen");
 
@@ -241,7 +241,7 @@ public class MyPod extends Application {
         for (int i = 0; i < menuLabels.size(); i++) {
             Label label = menuLabels.get(i);
             if (i == selectedIndex) {
-                label.getStyleClass().add("selected-item"); // Gör texten blå/markerad
+                label.getStyleClass().add("selected-item"); // Gör texten markerad
                 ensureVisible(label); // Se till att scrollbaren flyttas så vi ser valet
             } else {
                 label.getStyleClass().remove("selected-item"); // Ta bort markering
@@ -300,7 +300,7 @@ public class MyPod extends Application {
                 } else addMenuItem("No albums found");
             }
             case "Playlists" -> {
-                openMusicPlayer(); // Specialfall: Öppna den andra spelar-vyn
+                openMusicPlayer(); // Öppnar myTunes i nytt fönster
                 return;
             }
         }
