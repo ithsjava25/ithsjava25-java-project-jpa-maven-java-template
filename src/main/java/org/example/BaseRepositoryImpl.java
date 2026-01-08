@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManager;
 
 import java.util.Optional;
 
-public class BaseRepositoryImpl<T extends org.example.BaseEntity> implements Repository<T>{
+public class BaseRepositoryImpl<T extends org.example.BaseEntity> implements Repository<T> {
 
     protected EntityManager em;
     protected Class<T> entityClass;
@@ -17,15 +17,20 @@ public class BaseRepositoryImpl<T extends org.example.BaseEntity> implements Rep
 
 
     public T save(T entity) {
-        if (entity.getId() == null) {
-            em.persist(entity);
+        if (entity == null) {
 
-            return entity;
-        }
-        else{
-                return em.merge(entity);
+                throw new IllegalArgumentException("Entity cannot be null");
             }
+            if (entity.getId() == null) {
+                em.persist(entity);
+                return entity;
+            }
+        else {
+            return em.merge(entity);
         }
+    }
+
+
 
     public EntityManager  getEntityManager() {
         return em;
@@ -52,7 +57,7 @@ public class BaseRepositoryImpl<T extends org.example.BaseEntity> implements Rep
     @Override
     public Iterable<T> findAll() {
         return em.createQuery(
-            "select e from " + entityClass.getName() + " e", entityClass
+            "select e from " + entityClass.getSimpleName() + " e", entityClass
         ).getResultList();
     }
 

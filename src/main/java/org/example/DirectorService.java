@@ -6,21 +6,22 @@ public class DirectorService {
 
     private final DirectorRepository<Director> directorRepository;
 
-    public DirectorService(DirectorRepository directorRepository, FilmRepository filmRepo) {
+    public DirectorService(DirectorRepository directorRepository) {
         this.directorRepository = directorRepository;
     }
 
 
     public Director create(Director director) {
-        return (Director) directorRepository.save(director);
+        return directorRepository.save(director);
     }
 
 
     public void addFilm(Long directorId, Film film) {
-        Director director = (Director) directorRepository.findById(directorId)
+        Director director =  directorRepository.findById(directorId)
             .orElseThrow();
 
         director.addFilm(film);
+          directorRepository.save(director);
     }
 
 
@@ -32,7 +33,7 @@ public class DirectorService {
 
 
     public void delete(Long id) {
-        Director director = (Director) directorRepository.findById(id)
+        Director director = directorRepository.findById(id)
             .orElseThrow();
 
         directorRepository.delete(director);
