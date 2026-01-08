@@ -108,10 +108,6 @@ public class SeedData {
                 book.getGenres().add(genre);
                 genre.getBooks().add(book);
 
-                //todo:
-                // 5) Persist book
-                em.persist(book);
-
                 saved++;
                 System.out.println("Sparade 1 bok: " + title);
             }

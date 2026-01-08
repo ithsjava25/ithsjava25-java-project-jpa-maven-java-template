@@ -21,6 +21,7 @@ public class Book {
     @Column(length = 2000)
     private String description;
 
+    @Column(unique = true, nullable = false)
     private String isbn;
     private int publishYear;
 
