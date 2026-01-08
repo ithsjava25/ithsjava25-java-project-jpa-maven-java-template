@@ -29,8 +29,16 @@ public class Genre {
         return genreId;
     }
 
-    @ManyToMany @JoinTable(name = "book_genre",
-        joinColumns = @JoinColumn(name="genreId"))
+    @ManyToMany
+    @JoinTable(
+        name = "book_genre",
+        joinColumns = @JoinColumn(name = "genreId"),
+        inverseJoinColumns = @JoinColumn(name = "books_bookId")
+    )
     private List<Book> books = new ArrayList<>();
+
+    public List<Book> getBooks() {
+        return books;
+    }
 
 }

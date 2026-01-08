@@ -15,7 +15,10 @@ public class Book {
 
     private String title;
     private String genre;
+
+    @Column(length = 2000)
     private String description;
+
     private String isbn;
     private int publishYear;
 
@@ -75,5 +78,13 @@ public class Book {
 
     @OneToOne @JoinColumn(name = "loaned_book")
     private Loan loan;
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
 
 }
