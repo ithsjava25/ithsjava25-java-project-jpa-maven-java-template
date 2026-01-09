@@ -2,10 +2,6 @@ package org.example;
 
 import jakarta.persistence.*;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,7 +9,7 @@ import java.util.Set;
 public class Director extends BaseEntity{
 
 
-    private Long id;
+    //private Long id;
 
     @OneToMany(
         mappedBy = "director",
@@ -23,21 +19,20 @@ public class Director extends BaseEntity{
     )
     private Set<Film> films = new HashSet<>();
 
-    @ManyToMany()
+    @ManyToMany
+    @JoinTable(
+                name = "director_series",
+                joinColumns = @JoinColumn(name = "director_id"),
+                inverseJoinColumns = @JoinColumn(name = "series_id"))
     private Set<Series> series = new HashSet<>();
 
-    @NotBlank
-    @Size(max = 100)
     private String name;
 
-    @NotBlank
     private String country;
 
-    @Min(1850)
-    private int birthYear;
+    private Integer birthYear;
 
-    @Column(nullable = true)
-    @Max(2100)
+
     private Integer yearOfDeath;
 
 
@@ -58,11 +53,11 @@ public class Director extends BaseEntity{
         this.yearOfDeath = yearOfDeath;
     }
 
-    public int getBirthYear() {
+    public Integer getBirthYear() {
         return birthYear;
     }
 
-    public void setBirthYear(int birthYear) {
+    public void setBirthYear(Integer birthYear) {
         this.birthYear = birthYear;
     }
 
@@ -82,10 +77,7 @@ public class Director extends BaseEntity{
         this.name = name;
     }
 
-    public void setId(Long id) {
 
-        this.id = id;
-    }
 
     public void addFilm(Film film) {
         films.add(film);
@@ -109,19 +101,6 @@ public class Director extends BaseEntity{
         series.remove(s);
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Director)) return false;
-        Director other = (Director) o;
-        return id != null && id.equals(other.id);
-    }
-    @Override
-    public int hashCode() {
-       return 31;
-    }
+
 }
