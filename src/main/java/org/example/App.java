@@ -37,6 +37,7 @@ public class App {
             hours(emf);
             createTable(emf);
             createGuest(emf);
+            mainMenu();
 
 
             //Show all the hours available
@@ -134,6 +135,35 @@ public class App {
             entities = scanResult.getClassesWithAnnotation(Entity.class).loadClasses();
         }
         return entities;
+    }
+
+    public static void mainMenu() {
+        boolean running = true;
+        while (running) {
+            String select;
+
+            String menu = """
+                1 CREATE BOOKING
+                2 UPDATE BOOKING
+                3 READ BOOKING
+                4 DELETE BOOKING
+
+                CREATE TABLES*
+                CREATE GUESTS*
+
+                7 EXIT
+                """;
+            select = IO.readln(menu).toLowerCase();
+
+            switch (select) {
+                case "create booking", "cb", "1" -> System.out.println("1");
+                case "update booking", "ub", "2" -> System.out.println("2");
+                case "read booking", "rb", "3" -> System.out.println("3");
+                case "delete booking", "db", "4" -> System.out.println("4");
+                case "7" -> running = false;
+                default -> mainMenu();
+            }
+        }
     }
 
 }
