@@ -25,6 +25,10 @@ public class Booking {
     @Column(name="party_size", nullable = false)
     private int partySize;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private BookingStatus status = BookingStatus.PENDING;
+
     @ManyToOne
     @JoinColumn(name="table_id", nullable = false)
     private Table table;
@@ -43,6 +47,8 @@ public class Booking {
         this.partySize = partySize;
         this.table = table;
         this.guests = guests;
+        this.status = BookingStatus.PENDING;
+
     }
 
     public void addGuest(Guest guest){
@@ -54,6 +60,24 @@ public class Booking {
         guests.remove(guest);
         guest.getBookings().remove(this);
     }
+
+    public BookingStatus getStatus() {
+        return status;
+    }
+    public void confirmBooking(){
+        this.status = BookingStatus.CONFIRMED;
+    }
+    public void cancelBooking(){
+        this.status = BookingStatus.CANCELLED;
+    }
+    public void completeBooking(){
+        this.status = BookingStatus.COMPLETED;
+    }
+    public void noShowBooking(){
+        this.status = BookingStatus.NO_SHOW;
+    }
+
+    public void setStatus(BookingStatus status) {}
 
     public Booking() {}
 
