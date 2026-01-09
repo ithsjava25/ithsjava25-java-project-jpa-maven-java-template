@@ -7,3 +7,4 @@ public enum BookingStatus {
     COMPLETED,
     NO_SHOW
 }
+// Status system
