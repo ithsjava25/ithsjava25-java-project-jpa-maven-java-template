@@ -1,29 +1,33 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="bookings")
+@jakarta.persistence.Table(name="Bookings")
 
 public class Booking {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="booking_Time", nullable = false)
-    private LocalDateTime time;
+    @Column(name="booking_date", nullable = false)
+    private LocalDate date; //day of the reservation
+
+    @ManyToOne
+    @JoinColumn(name="timeslot_id")
+    private TimeSlot timeSlot; //time selected from the determited times
 
     @Column(name="party_size", nullable = false)
-    private int party;
+    private int partySize;
 
     @ManyToOne
     @JoinColumn(name="table_id", nullable = false)
-    private RestaurantTable table;
+    private Table table;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -32,10 +36,13 @@ public class Booking {
         inverseJoinColumns = @JoinColumn (name = "guest_id"))
     private List<Guest> guests = new ArrayList<>();
 
-    public Booking(RestaurantTable table, LocalDateTime time, int party){
+    public Booking(Long id, LocalDate date, TimeSlot timeSlot, int partySize, Table table, List<Guest> guests) {
+        this.id = id;
+        this.date = date;
+        this.timeSlot = timeSlot;
+        this.partySize = partySize;
         this.table = table;
-        this.time = time;
-        this.party = party;
+        this.guests = guests;
     }
 
     public void addGuest(Guest guest){
@@ -50,27 +57,35 @@ public class Booking {
 
     public Booking() {}
 
-    public LocalDateTime getTime() {
-        return time;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setTime(LocalDateTime time) {
-        this.time = time;
+    public void setTime(LocalDate time) {
+        this.date = date;
+    }
+
+    public TimeSlot getTimeSlot() {
+        return timeSlot;
+    }
+
+    public void setTimeSlot(TimeSlot timeSlot) {
+        this.timeSlot = timeSlot;
     }
 
     public int getParty() {
-        return party;
+        return partySize;
     }
 
     public void setParty(int party) {
-        this.party = party;
+        this.partySize = partySize;
     }
 
-    public RestaurantTable getTable() {
+    public Table getTable() {
         return table;
     }
 
-    public void setTable(RestaurantTable table) {
+    public void setTable(Table table) {
         this.table = table;
     }
 
@@ -91,8 +106,14 @@ public class Booking {
     }
 
     @Override
-    public String toString(){
-        return "Booking id = " + id + ", time = " + time + ", party = " + party + ", table = " + (table != null ? table.getTableNumber() : "N/A") + ".";
+    public String toString() {
+        return "Booking{" +
+            "id=" + id +
+            ", date=" + date +
+            ", timeSlot=" + timeSlot +
+            ", party=" + partySize +
+            ", table=" + table +
+            ", guests=" + guests +
+            '}';
     }
-
 }

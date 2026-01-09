@@ -4,17 +4,18 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
-@Table(name = "restaurant_table")
+@jakarta.persistence.Table(name = "Tables")
 
-public class RestaurantTable {
+public class Table {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-   @OneToMany(mappedBy = "restaurant_table", cascade = CascadeType.PERSIST)
+   @OneToMany(mappedBy = "table", cascade = CascadeType.PERSIST)
    private List<Booking> bookings = new ArrayList<>();
 
 
@@ -25,9 +26,10 @@ public class RestaurantTable {
     private int capacity;
 
 
-    public RestaurantTable(int capacity, String tableNumber){
+    public Table(int capacity, String tableNumber){
         this.capacity = capacity;
         this.tableNumber = tableNumber;
+
     }
 
     public List<Booking> getBookings() {
@@ -54,7 +56,7 @@ public class RestaurantTable {
         this.capacity = capacity;
     }
 
-    public RestaurantTable() {}
+    public Table() {}
 
     public void setId(Long id) {
         this.id = id;
@@ -64,4 +66,25 @@ public class RestaurantTable {
         return id;
     }
 
+    @Override
+    public String toString() {
+        return "Table{" +
+            "id=" + id +
+            ", bookings=" + bookings +
+            ", tableNumber='" + tableNumber + '\'' +
+            ", capacity=" + capacity +
+            '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Table table = (Table) o;
+        return capacity == table.capacity && Objects.equals(id, table.id) && Objects.equals(bookings, table.bookings) && Objects.equals(tableNumber, table.tableNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, bookings, tableNumber, capacity);
+    }
 }

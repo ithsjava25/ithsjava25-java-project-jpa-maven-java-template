@@ -2,11 +2,12 @@ package org.example.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Guests")
+@jakarta.persistence.Table(name = "Guests")
 
 public class Guest {
     @Id
@@ -32,7 +33,6 @@ public class Guest {
     }
 
     public Guest(){}
-
 
     public String getName() {
         return name;
@@ -74,6 +74,5 @@ public class Guest {
     public Long getId() {
         return id;
     }
-
 
 }
