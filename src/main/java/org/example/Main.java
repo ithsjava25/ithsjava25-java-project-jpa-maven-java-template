@@ -19,26 +19,27 @@ public class Main {
 
         try (EntityManagerFactory emf = cfg.createEntityManagerFactory()) {
 
-            // 2. The Service logic happens inside a transaction
             emf.runInTransaction(em -> {
 
-                DirectorRepositoryImpl directorRepository = new DirectorRepositoryImpl(emf);
-                Director d = new Director();
+
+
+
                 try {
                     em.getTransaction().begin();
+                    DirectorRepositoryImpl directorRepository = new DirectorRepositoryImpl(emf);
+                    Director d = new Director();
+                    d.setName("John Doe");
+
+                    directorRepository.save(d);
+
                     em.getTransaction().commit();
-
-                    em.close();
-                    emf.close();
-
-
-
-
-
-
-                } catch (RuntimeException e) {
+                    
+                } catch (Exception e) {
                     System.err.println("Error: " + e.getMessage());
+                } finally {
+                    em.close();
                 }
+
             });
 
         }

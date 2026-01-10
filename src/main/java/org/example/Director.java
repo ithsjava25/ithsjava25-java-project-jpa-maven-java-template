@@ -13,7 +13,7 @@ public class Director extends BaseEntity{
 
     @OneToMany(
         mappedBy = "director",
-        cascade = CascadeType.PERSIST,
+        cascade = { CascadeType.PERSIST, CascadeType.MERGE },
         orphanRemoval = true
 
     )

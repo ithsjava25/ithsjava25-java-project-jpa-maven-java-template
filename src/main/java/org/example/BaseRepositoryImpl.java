@@ -64,7 +64,7 @@ public class BaseRepositoryImpl<T extends org.example.BaseEntity> implements Rep
     @Override
     public boolean existsById(Long id) {
         Long count = em.createQuery(
-            "select count(e) from " + entityClass.getName() + " e where e.id = :id",
+            "select count(e) from " + entityClass.getSimpleName() + " e where e.id = :id",
             Long.class
         ).setParameter("id", id).getSingleResult();
         return count > 0;
@@ -74,7 +74,7 @@ public class BaseRepositoryImpl<T extends org.example.BaseEntity> implements Rep
     @Override
     public long count() {
 
-        return em.createQuery("select count(e) from " + entityClass.getName() + " e", Long.class).getSingleResult();
+        return em.createQuery("select count(e) from " + entityClass.getSimpleName() + " e", Long.class).getSingleResult();
     }
 
     @Override

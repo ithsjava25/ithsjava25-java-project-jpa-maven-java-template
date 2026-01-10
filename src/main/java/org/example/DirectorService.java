@@ -6,7 +6,7 @@ public class DirectorService {
 
     private final DirectorRepository<Director> directorRepository;
 
-    public DirectorService(DirectorRepository directorRepository) {
+    public DirectorService(DirectorRepository<Director> directorRepository) {
         this.directorRepository = directorRepository;
     }
 
@@ -27,7 +27,7 @@ public class DirectorService {
     public DirectorDTO find(Long id) {
         return directorRepository.findById(id)
             .map(d -> new DirectorDTO(d.getName(), d.getCountry()))
-            .orElseThrow(() -> new RuntimeException("Director not found"));
+            .orElseThrow(() -> new RuntimeException("D irector not found"));
     }
 
     public void delete(Long id) {
