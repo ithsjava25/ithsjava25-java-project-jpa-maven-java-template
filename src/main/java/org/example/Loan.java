@@ -1,11 +1,7 @@
 package org.example;
 
 import jakarta.persistence.*;
-
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 public class Loan {
@@ -16,27 +12,24 @@ public class Loan {
 
     private ZonedDateTime loanDate;
     private ZonedDateTime returnDate;
-    private Long userId;
-    private Long bookId;
 
     public Loan(){
     }
 
-
-    public Long getBookId() {
-        return bookId;
+    public User getUser() {
+        return user;
     }
 
-    public void setBookId(Long bookId) {
-        this.bookId = bookId;
+    public void setUser(User user){
+        this.user = user;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Book getBook() {
+        return book;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setBook(Book book){
+        this.book = book;
     }
 
     public ZonedDateTime getReturnDate() {
