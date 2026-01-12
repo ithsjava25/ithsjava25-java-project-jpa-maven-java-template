@@ -141,21 +141,6 @@ public class BookingService {
         );
     }
 
-    public Booking getBooking(Long id) {
-        return emf.callInTransaction(em ->
-            em.createQuery(
-                    "SELECT b FROM Booking b " +
-                        "LEFT JOIN FETCH b.guests " +
-                        "LEFT JOIN FETCH b.table " +
-                        "LEFT JOIN FETCH b.timeSlot " +
-                        "WHERE b.id = :id",
-                    Booking.class
-                )
-                .setParameter("id", id)
-                .getSingleResult()
-        );
-    }
-
     public void updateBookingStatus(Long bookingId, BookingStatus newStatus) {
         emf.runInTransaction(em -> {
             Booking booking = em.find(Booking.class, bookingId);
@@ -194,22 +179,5 @@ public class BookingService {
                 System.out.println("Booking with ID " + bookingId + " not found!");
             }
         });
-    }
-
-    // Hitta lediga bord för ett specifikt datum/tid
-    public List<Table> getAvailableTables(LocalDate date, Long timeSlotId) {
-        return emf.callInTransaction(em ->
-            em.createQuery(
-                    "SELECT t FROM Table t WHERE t.id NOT IN " +
-                        "(SELECT b.table.id FROM Booking b " +
-                        "WHERE b.date = :date " +
-                        "AND b.timeSlot.id = :timeSlotId " +
-                        "AND b.status != 'CANCELLED')",
-                    Table.class
-                )
-                .setParameter("date", date)
-                .setParameter("timeSlotId", timeSlotId)
-                .getResultList()
-        );
     }
 }

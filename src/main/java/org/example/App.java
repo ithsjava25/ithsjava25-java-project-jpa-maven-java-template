@@ -48,13 +48,14 @@ public class App {
     private static void createInitialData(EntityManagerFactory emf) {
         // Kolla om data redan finns
         Long count = emf.callInTransaction(em ->
-            em.createQuery("SELECT COUNT(t) FROM Table t", Long.class).getSingleResult()
+            em.createQuery("SELECT COUNT(ts) FROM TimeSlot ts", Long.class).getSingleResult()
         );
 
         if (count == 0) {
             hours(emf);
             createGuest(emf);
             System.out.println("Initial data created!");
+            System.out.println("Create tables manually in the database if necessary!");
         }
     }
 
@@ -70,8 +71,7 @@ public class App {
     private static void hours(EntityManagerFactory emf) {
         emf.runInTransaction(em -> {
             String[] times = {"16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00"};
-            for (int i = 0; i < times.length; i++) {
-                String start = times[i];
+            for (String start : times) {
                 String[] parts = start.split(":");
                 int hour = Integer.parseInt(parts[0]) + 2;
                 String end = hour + ":" + parts[1];
@@ -153,7 +153,7 @@ public class App {
 
                     // Validera att datumet är korrekt
                     LocalDate today = LocalDate.now();
-                    // hur många månader fram man kan boka
+                    // hur många månader fram man kan boka(kan ä
                     LocalDate maxDate = today.plusMonths(3);
 
                     if (date.isBefore(today)) {

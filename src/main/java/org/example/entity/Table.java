@@ -66,25 +66,4 @@ public class Table {
         return id;
     }
 
-    @Override
-    public String toString() {
-        return "Table{" +
-            "id=" + id +
-            ", bookings=" + bookings +
-            ", tableNumber='" + tableNumber + '\'' +
-            ", capacity=" + capacity +
-            '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Table table = (Table) o;
-        return capacity == table.capacity && Objects.equals(id, table.id) && Objects.equals(bookings, table.bookings) && Objects.equals(tableNumber, table.tableNumber);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, bookings, tableNumber, capacity);
-    }
 }

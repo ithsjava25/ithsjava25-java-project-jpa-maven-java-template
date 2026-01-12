@@ -40,17 +40,6 @@ public class Booking {
         inverseJoinColumns = @JoinColumn (name = "guest_id"))
     private List<Guest> guests = new ArrayList<>();
 
-    public Booking(Long id, LocalDate date, TimeSlot timeSlot, int partySize, Table table, List<Guest> guests) {
-        this.id = id;
-        this.date = date;
-        this.timeSlot = timeSlot;
-        this.partySize = partySize;
-        this.table = table;
-        this.guests = guests;
-        this.status = BookingStatus.PENDING;
-
-    }
-
     public void addGuest(Guest guest){
         guests.add(guest);
         guest.getBookings().add(this);
@@ -131,10 +120,8 @@ public class Booking {
         return "Booking{" +
             "id=" + id +
             ", date=" + date +
-            ", timeSlot=" + timeSlot +
             ", party=" + partySize +
-            ", table=" + table +
-            ", guests=" + guests +
+            ", status=" + status +
             '}';
     }
 }
