@@ -53,7 +53,6 @@ public class App {
 
         if (count == 0) {
             hours(emf);
-            createTable(emf);
             createGuest(emf);
             System.out.println("Initial data created!");
         }
@@ -65,17 +64,6 @@ public class App {
             em.persist(new Guest("Samuel", "Bord för 3", "072778882"));
             em.persist(new Guest("Anna", "VIP", "0701234567"));
             em.persist(new Guest("Erik", "Allergisk mot nötter", "0709876543"));
-        });
-    }
-
-    private static void createTable(EntityManagerFactory emf) {
-        emf.runInTransaction(em -> {
-            for (int i = 1; i <= 5; i++) {
-                Table table = new Table();
-                table.setTableNumber(String.valueOf(i));
-                table.setCapacity(i == 4 ? 6 : (i % 2 == 0 ? 2 : 4));
-                em.persist(table);
-            }
         });
     }
 
