@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.jpa.HibernatePersistenceConfiguration;
 
 public class Main {
-     static void main() {
+     public static void main(String[] args) {
 
 
         final PersistenceConfiguration cfg = new HibernatePersistenceConfiguration("emf")

@@ -1,6 +1,7 @@
 package org.example;
 
 import jakarta.persistence.*;
+import org.hibernate.engine.internal.Cascade;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +20,7 @@ public class Director extends BaseEntity{
     )
     private Set<Film> films = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany( cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
                 name = "director_series",
                 joinColumns = @JoinColumn(name = "directors_id"),
