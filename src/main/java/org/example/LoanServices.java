@@ -1,6 +1,7 @@
 package org.example;
 
 import jakarta.persistence.EntityManager;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public class LoanServices {
@@ -25,5 +26,24 @@ public class LoanServices {
         } else {
             return true;
         }
+    }
+
+    public boolean loanBook(Long bookId, Long userId) {
+
+        if (isBookLoaned(bookId)) {
+            return false;
+        }
+
+        User user = em.find(User.class, userId);
+        Book book = em.find(Book.class, bookId);
+
+        Loan loan = new Loan();
+
+        loan.setUser(user);
+        loan.setBook(book);
+        loan.setLoanDate(ZonedDateTime.now());
+        loan.setReturnDate(null);
+        em.persist(loan);
+        return true;
     }
 }
