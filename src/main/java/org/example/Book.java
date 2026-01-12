@@ -64,6 +64,15 @@ public class Book {
     public Long getId() {
         return bookId;
     }
+
+    public Loan getLoan() {
+        return loan;
+    }
+
+    public void setLoan(Loan loan) {
+        this.loan = loan;
+    }
+
     @ManyToMany
     @JoinTable(name = "book_author",
         joinColumns = @JoinColumn(name = "bookId"))
