@@ -12,6 +12,7 @@ public class LoanServices {
         this.em = em;
     }
 
+    // Kolla om en bok är utlånad
     public boolean isBookLoaned(Long bookId) {
 
         List<Loan> loans = em.createQuery(
@@ -28,6 +29,7 @@ public class LoanServices {
         }
     }
 
+    // Låna en bok
     public boolean loanBook(Long bookId, Long userId) {
 
         if (isBookLoaned(bookId)) {
@@ -47,6 +49,7 @@ public class LoanServices {
         return true;
     }
 
+    // Lämna tillbak en bok
     public boolean returnBook(User user, Book book) {
 
         Loan loan = em.createQuery(
