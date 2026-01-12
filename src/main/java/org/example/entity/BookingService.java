@@ -14,54 +14,95 @@ public class BookingService {
         this.emf = emf;
     }
 
-    // Visa alla tillgängliga bord
-    public List<Table> getAllTables() {
-        return emf.callInTransaction(em ->
-            em.createQuery("SELECT t FROM Table t", Table.class).getResultList()
-        );
+    // Skapa gäst
+    public Long createGuest(String name, String note, String contact) {
+        return emf.callInTransaction(em -> {
+            Guest guest = new Guest(name, note, contact);
+            em.persist(guest);
+            em.flush();
+            return guest.getId();
+        });
     }
 
-    // Visa alla tillgängliga tider
-    public List<TimeSlot> getAllTimeSlots() {
-        return emf.callInTransaction(em ->
-            em.createQuery("SELECT ts FROM TimeSlot ts", TimeSlot.class).getResultList()
-        );
-    }
-
-    // Visa alla gäster
-    public List<Guest> getAllGuests() {
-        return emf.callInTransaction(em ->
-            em.createQuery("SELECT g FROM Guest g", Guest.class).getResultList()
-        );
-    }
-
-    // Skapa ny bokning
+    // Skapa bokning MED validering
     public void createBooking(Long tableId, Long timeSlotId, LocalDate date, int partySize, List<Long> guestIds) {
         emf.runInTransaction(em -> {
-            // Hämta bord
+            // 1. Hämta bord
             Table table = em.find(Table.class, tableId);
             if (table == null) {
                 throw new IllegalArgumentException("Table not found!");
             }
 
-            // Hämta tidslucka
+            // 2. Hämta tidslucka
             TimeSlot timeSlot = em.find(TimeSlot.class, timeSlotId);
             if (timeSlot == null) {
                 throw new IllegalArgumentException("TimeSlot not found!");
             }
 
-            // Skapa bokning
+            // 3. VALIDERA KAPACITET
+            if (partySize > table.getCapacity()) {
+                throw new IllegalArgumentException(
+                    "Party size (" + partySize + ") exceeds table capacity (" + table.getCapacity() + ")!"
+                );
+            }
+
+            if (partySize < 1) {
+                throw new IllegalArgumentException("Party size must be at least 1!");
+            }
+
+            // 4. VALIDERA DATUM
+            LocalDate today = LocalDate.now();
+            LocalDate maxDate = today.plusMonths(3);
+
+            if (date.isBefore(today)) {
+                throw new IllegalArgumentException("Cannot book a date in the past!");
+            }
+
+            if (date.isAfter(maxDate)) {
+                throw new IllegalArgumentException("Cannot book more than 3 months in advance!");
+            }
+
+            // 5. VALIDERA ATT BORDET INTE ÄR BOKAT FÖR SAMMA TID/DATUM
+            Long existingBookings = em.createQuery(
+                    "SELECT COUNT(b) FROM Booking b " +
+                        "WHERE b.table.id = :tableId " +
+                        "AND b.date = :date " +
+                        "AND b.timeSlot.id = :timeSlotId " +
+                        "AND b.status != 'CANCELLED'",
+                    Long.class
+                )
+                .setParameter("tableId", tableId)
+                .setParameter("date", date)
+                .setParameter("timeSlotId", timeSlotId)
+                .getSingleResult();
+
+            if (existingBookings > 0) {
+                throw new IllegalArgumentException(
+                    "Table " + table.getTableNumber() +
+                        " is already booked for " + date +
+                        " at " + timeSlot.getStartTime() + "!"
+                );
+            }
+
+            // 6. Validera att minst en gäst finns
+            if (guestIds == null || guestIds.isEmpty()) {
+                throw new IllegalArgumentException("Booking must have at least one guest!");
+            }
+
+            // 7. Skapa bokning
             Booking booking = new Booking();
-            booking.setTime(date);
+            booking.setDate(date);
             booking.setTimeSlot(timeSlot);
             booking.setParty(partySize);
             booking.setTable(table);
 
-            // Lägg till gäster
+            // 8. Lägg till gäster
             for (Long guestId : guestIds) {
                 Guest guest = em.find(Guest.class, guestId);
                 if (guest != null) {
                     booking.addGuest(guest);
+                } else {
+                    throw new IllegalArgumentException("Guest with ID " + guestId + " not found!");
                 }
             }
 
@@ -70,24 +111,57 @@ public class BookingService {
         });
     }
 
-    // Visa alla bokningar
-    public List<Booking> getAllBookings() {
+    public List<Table> getAllTables() {
         return emf.callInTransaction(em ->
-            em.createQuery("SELECT b FROM Booking b", Booking.class).getResultList()
+            em.createQuery("SELECT t FROM Table t", Table.class).getResultList()
         );
     }
 
-    // Visa en specifik bokning
-    public Booking getBooking(Long id) {
-        return emf.callInTransaction(em -> em.find(Booking.class, id));
+    public List<TimeSlot> getAllTimeSlots() {
+        return emf.callInTransaction(em ->
+            em.createQuery("SELECT ts FROM TimeSlot ts", TimeSlot.class).getResultList()
+        );
     }
 
-    // Uppdatera bokningsstatus
+    public List<Guest> getAllGuests() {
+        return emf.callInTransaction(em ->
+            em.createQuery("SELECT g FROM Guest g", Guest.class).getResultList()
+        );
+    }
+
+    public List<Booking> getAllBookings() {
+        return emf.callInTransaction(em ->
+            em.createQuery(
+                "SELECT DISTINCT b FROM Booking b " +
+                    "LEFT JOIN FETCH b.guests " +
+                    "LEFT JOIN FETCH b.table " +
+                    "LEFT JOIN FETCH b.timeSlot",
+                Booking.class
+            ).getResultList()
+        );
+    }
+
+    public Booking getBooking(Long id) {
+        return emf.callInTransaction(em ->
+            em.createQuery(
+                    "SELECT b FROM Booking b " +
+                        "LEFT JOIN FETCH b.guests " +
+                        "LEFT JOIN FETCH b.table " +
+                        "LEFT JOIN FETCH b.timeSlot " +
+                        "WHERE b.id = :id",
+                    Booking.class
+                )
+                .setParameter("id", id)
+                .getSingleResult()
+        );
+    }
+
     public void updateBookingStatus(Long bookingId, BookingStatus newStatus) {
         emf.runInTransaction(em -> {
             Booking booking = em.find(Booking.class, bookingId);
             if (booking == null) {
-                throw new IllegalArgumentException("Booking not found!");
+                System.out.println("Booking with ID " + bookingId + " not found!");
+                return;
             }
 
             switch (newStatus) {
@@ -101,15 +175,41 @@ public class BookingService {
         });
     }
 
-    // Ta bort bokning
     public void deleteBooking(Long bookingId) {
         emf.runInTransaction(em -> {
-            Booking booking = em.find(Booking.class, bookingId);
-            if (booking == null) {
-                throw new IllegalArgumentException("Booking not found!");
+            try {
+                Booking booking = em.createQuery(
+                        "SELECT b FROM Booking b " +
+                            "LEFT JOIN FETCH b.guests " +
+                            "WHERE b.id = :id",
+                        Booking.class
+                    )
+                    .setParameter("id", bookingId)
+                    .getSingleResult();
+
+                em.remove(booking);
+                System.out.println("Booking deleted successfully!");
+
+            } catch (jakarta.persistence.NoResultException e) {
+                System.out.println("Booking with ID " + bookingId + " not found!");
             }
-            em.remove(booking);
-            System.out.println("Booking deleted successfully!");
         });
+    }
+
+    // Hitta lediga bord för ett specifikt datum/tid
+    public List<Table> getAvailableTables(LocalDate date, Long timeSlotId) {
+        return emf.callInTransaction(em ->
+            em.createQuery(
+                    "SELECT t FROM Table t WHERE t.id NOT IN " +
+                        "(SELECT b.table.id FROM Booking b " +
+                        "WHERE b.date = :date " +
+                        "AND b.timeSlot.id = :timeSlotId " +
+                        "AND b.status != 'CANCELLED')",
+                    Table.class
+                )
+                .setParameter("date", date)
+                .setParameter("timeSlotId", timeSlotId)
+                .getResultList()
+        );
     }
 }

@@ -82,7 +82,7 @@ public class Booking {
         return date;
     }
 
-    public void setTime(LocalDate time) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -98,7 +98,7 @@ public class Booking {
         return partySize;
     }
 
-    public void setParty(int party) {
+    public void setParty(int partySize) {
         this.partySize = partySize;
     }
 
