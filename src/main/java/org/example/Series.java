@@ -8,6 +8,8 @@ import java.util.Set;
 @Entity
 public class Series extends BaseEntity{
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToMany

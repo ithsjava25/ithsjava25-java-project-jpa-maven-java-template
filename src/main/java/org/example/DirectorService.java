@@ -17,11 +17,11 @@ public class DirectorService {
 
 
     public void addFilm(Long directorId, Film film) {
-        Director director =  directorRepository.findById(directorId)
-            .orElseThrow();
+        Director director = directorRepository.findById(directorId)
+            .orElseThrow(() -> new RuntimeException("Director not found: " + directorId));
 
         director.addFilm(film);
-          directorRepository.save(director);
+        directorRepository.save(director);
     }
 
     public DirectorDTO find(Long id) {
@@ -32,7 +32,7 @@ public class DirectorService {
 
     public void delete(Long id) {
         Director director = directorRepository.findById(id)
-            .orElseThrow();
+            .orElseThrow(() -> new RuntimeException("Director not found: " + id));
 
         directorRepository.delete(director);
     }

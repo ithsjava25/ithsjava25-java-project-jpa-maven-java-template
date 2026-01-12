@@ -16,16 +16,15 @@ public class BaseRepositoryImpl<T extends org.example.BaseEntity> implements Rep
     }
 
 
+    @Override
     public T save(T entity) {
         if (entity == null) {
-
                 throw new IllegalArgumentException("Entity cannot be null");
             }
             if (entity.getId() == null) {
                 em.persist(entity);
                 return entity;
-            }
-        else {
+            } else {
             return em.merge(entity);
         }
     }
