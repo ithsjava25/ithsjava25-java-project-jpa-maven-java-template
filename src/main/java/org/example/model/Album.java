@@ -14,9 +14,10 @@ public class Album {
     private int releaseYear;
 
     @ManyToOne
+    @JoinColumn(name = "artist_id")
     private Artist artist;
 
-    @OneToMany(mappedBy = "album")
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Song> songs = new ArrayList<>();
 
     public Album() {}

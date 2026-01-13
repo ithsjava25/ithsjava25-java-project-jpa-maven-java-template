@@ -12,6 +12,7 @@ public class Song {
     private int duration; // i sekunder
 
     @ManyToOne
+    @JoinColumn(name = "album_id")
     private Album album;
 
     public Song() {}

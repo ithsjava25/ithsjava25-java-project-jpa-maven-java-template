@@ -1,2 +1,10 @@
 target/
 /.idea/
+src/main/resources/META-INF/persistence.xml
+*.db
+*.mv.db
+*.trace.db
+.idea/
+*.iml
+*.iws
+target/

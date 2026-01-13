@@ -9,35 +9,31 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.release>17</maven.compiler.release> <!-- Ändra till 17 eller 11 -->
+        <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <hibernate.version>5.6.15.Final</hibernate.version> <!-- Viktigt: Använd 5.6 för JPA 2.2 -->
-        <h2.version>2.2.224</h2.version>
+        <hibernate.version>5.6.15.Final</hibernate.version>
+        <mysql.version>8.0.33</mysql.version>
     </properties>
 
     <dependencies>
-        <!-- Hibernate Core (JPA implementation) -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
 
-        <!-- JPA API -->
         <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>javax.persistence-api</artifactId>
             <version>2.2</version>
         </dependency>
 
-        <!-- H2 Database (ENKLAST - ingen installation behövs) -->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${h2.version}</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
         </dependency>
 
-        <!-- Testing dependencies (behåll dessa om du vill ha tester) -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>

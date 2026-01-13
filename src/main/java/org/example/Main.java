@@ -64,7 +64,7 @@ public class Main {
         em.persist(artist);
         em.getTransaction().commit();
 
-        System.out.println("✅ Artist tillagd!");
+        System.out.println(" Artist tillagd!");
     }
 
     // 2. visa alla artister
@@ -171,7 +171,7 @@ public class Main {
         }
 
         for(Artist artist : artists) {
-            System.out.println("\n🎤 ARTIST: " + artist.getName());
+            System.out.println("\n ARTIST: " + artist.getName());
 
             if(artist.getAlbums().isEmpty()) {
                 System.out.println("   (Inga album)");
@@ -179,7 +179,7 @@ public class Main {
             }
 
             for(Album album : artist.getAlbums()) {
-                System.out.println("   💿 ALBUM: " + album.getTitle() + " (" + album.getYear() + ")");
+                System.out.println("    ALBUM: " + album.getTitle() + " (" + album.getYear() + ")");
 
                 if(album.getSongs().isEmpty()) {
                     System.out.println("      (Inga låtar)");
