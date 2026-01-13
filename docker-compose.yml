@@ -8,8 +8,10 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: musicdb
+      MYSQL_USER: music_app
+      MYSQL_PASSWORD: music_app_pass
     ports:
-      - "3306:3306"  # DENNA RAD SAKNAS!
+      - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
     command:
