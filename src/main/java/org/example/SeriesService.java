@@ -23,9 +23,9 @@ public class SeriesService {
         seriesRepository.save(series);
     }
 
-    public FilmDTO find(Long id) {
+    public SeriesDTO find(Long id) {
         return seriesRepository.findById(id)
-            .map(s -> new SeriesDTO(s.getTitle()))
+            .map(SeriesDTO::new)
             .orElseThrow(() -> new RuntimeException("Series not found: " + id));
     }
 

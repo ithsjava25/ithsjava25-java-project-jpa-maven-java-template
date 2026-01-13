@@ -10,7 +10,8 @@ public class BaseRepositoryImpl<T extends org.example.BaseEntity> implements Rep
     protected Class<T> entityClass;
 
 
-    public BaseRepositoryImpl(EntityManager em, Class<T> entityClass) {
+//    public BaseRepositoryImpl(EntityManager em, Class<T> entityClass) {
+public BaseRepositoryImpl(Class<T> entityClass) {
         this.em = em;
         this.entityClass = entityClass;
     }
