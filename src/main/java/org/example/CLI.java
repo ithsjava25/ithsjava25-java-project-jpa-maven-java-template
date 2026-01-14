@@ -4,12 +4,22 @@ import jakarta.persistence.EntityManager;
 
 public class CLI {
     //private final String os = System.getProperty("os.name");
-    EntityManager em;
+    DirectorService directorService;
+    FilmService filmService;
+    SeriesService seriesService;
 
-    void mainMenu(EntityManager entityManager) { //throws IOException, InterruptedException {
+    void cliStart(DirectorService directorService, FilmService filmService, SeriesService seriesService){
+        this.directorService = directorService;
+        this.filmService = filmService;
+        this.seriesService = seriesService;
+
+        mainMenu();
+    }
+
+    void mainMenu() { //throws IOException, InterruptedException {
         while(true) {
             //clearConsole();
-            em = entityManager;
+
             System.out.println("""
                 Welcome to the Film Database!
 
@@ -57,7 +67,7 @@ public class CLI {
             case "2" -> listDirectors();
             case "3" -> listSpecificDirector();
             case "4" -> updateDirector();
-            case "5" -> mainMenu(em);
+            case "5" -> mainMenu();
             default -> invalidInput();
         }
     }
@@ -74,7 +84,7 @@ public class CLI {
             birthYear = Integer.parseInt(IO.readln("Enter the birth year of the Director: "));
             try {
                 yearOfDeath = Integer.valueOf(IO.readln("Enter the year of death of the Director." +
-                                                                        "If they're alive, leave blank: "));
+                    "If they're alive, leave blank: "));
             } catch (NumberFormatException _) {
             }
 
@@ -83,7 +93,7 @@ public class CLI {
             newDirector.setCountry(country);
             newDirector.setBirthYear(birthYear);
             newDirector.setYearOfDeath(yearOfDeath);
-            DirectorService.create(newDirector);
+            directorService.create(newDirector);
 
         } catch (NumberFormatException e) {
             System.out.println("Invalid input!");
@@ -91,12 +101,27 @@ public class CLI {
     }
 
     private void listDirectors() {
-        IO.println(DirectorService.findDirector());
+        IO.println(directorService.findAllDirectors());
     }
 
     private void listSpecificDirector() {
-        Long id = Long.valueOf(IO.readln("Enter the ID of the Director: "));
-        IO.println(DirectorService.findDirector(id).getName());
+        String input = IO.readln("Enter the ID or name of the Director: "));
+        Director d;
+        try{
+            d = directorService.findDirectorId(Long.valueOf(input));
+        } catch (NumberFormatException e) {
+            d = directorService.findDirectorName(input);
+        }
+
+
+        IO.println("Name: " + d.getName() +
+            "\nCountry: " +  d.getCountry() +
+            "\nYear of birth: " + d.getBirthYear() +
+            "\nYear of death: " + d.getYearOfDeath() +
+            "Films:\n" +
+            d.getFilms().stream() +
+            "\n\nSeries:\n" +
+            d.getSeries().stream());
     }
 
     private void updateDirector() {
@@ -118,8 +143,6 @@ public class CLI {
         } catch (NumberFormatException _) {
         }
 
-        //TODO:
-        //Determine which values aren't null, and update them
         Director updatedDirector = DirectorService.findDirector(id);
         if(name != null && !name.isEmpty())
             updatedDirector.setName(name);
@@ -129,7 +152,7 @@ public class CLI {
             updatedDirector.setBirthYear(birthYear);
         if(yearOfDeath != null)
             updatedDirector.setYearOfDeath(yearOfDeath);
-        DirectorService.create(updatedDirector);
+        DirectorService.update(updatedDirector);
 
     }
 
@@ -153,7 +176,7 @@ public class CLI {
             case "2" -> listFilms();
             case "3" -> listSpecificFilm();
             case "4" -> updateFilm();
-            case "5" -> mainMenu(em);
+            case "5" -> mainMenu();
             default -> invalidInput();
         }
     }
@@ -162,22 +185,51 @@ public class CLI {
         //clearConsole();
         String title = IO.readln("Enter the title of the Film: ");
 
-        //TODO:
-        //send information to create-method in org.example.Film class
+        try {
+            Film film = new Film();
+            film.setTitle(title);
+            film.setDirector(directorService.findDirector(Long.valueOf(IO.readln("Enter the ID of the Director: "))));
+            filmService.create(film);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input!");
+        }
     }
 
     private void listFilms() {
-        IO.println(Film.findAll(em));
+        IO.println(filmService.findAll().stream());
     }
 
     private void listSpecificFilm() {
-        String title = IO.readln("Enter the title of the Film: ");
-        IO.println(Film.findByName(em, title));
+        String input = IO.readln("Enter the ID or title of the Film: ");
+        Film f;
+        try{
+            f = filmService.findFilmId(Long.valueOf(input));
+        } catch (NumberFormatException e) {
+            f = filmService.findFilmTitle(input);
+        }
+
+        IO.println("Title: " + f.getTitle() +
+            "\nDirector: " + f.getDirector());
     }
 
     private void updateFilm() {
-        String title = IO.readln("Enter the title of the Film: ");
-        Film.update(em, title);
+        try {
+            IO.println("When prompted, enter the value you wish to update." +
+                "If you don't want to change it, leave the input blank.");
+            Film film = filmService.findFilm(Long.valueOf(IO.readln("Enter the ID of the Film: ")));
+            String title = IO.readln("Enter the title of the Film: ");
+            if(title != null && !title.isEmpty())
+                film.setTitle(title);
+            try {
+                Director director = directorService.findDirector(Long.valueOf(IO.readln("Enter the ID of the Director: ")));
+                film.setDirector(director);
+            } catch (NumberFormatException _) {
+            }
+
+            filmService.update(film);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input!");
+        }
     }
 
     private void seriesMenu() { //throws IOException, InterruptedException {
@@ -200,45 +252,85 @@ public class CLI {
             case "2" -> listSeries();
             case "3" -> listSpecificSeries();
             case "4" -> updateSeries();
-            case "5" -> mainMenu(em);
+            case "5" -> mainMenu();
             default -> invalidInput();
         }
     }
 
     private void createSeries() { //throws IOException, InterruptedException {
         //clearConsole();
-        String title = IO.readln("Enter the title of the Series: ");
-        int episodes = Integer.parseInt(IO.readln("Enter the number of episodes in the Series: "));
-        int firstAired = Integer.parseInt(IO.readln("Enter the year the Series was first released: "));
-        Integer lastAired =  Integer.valueOf(IO.readln("Enter the year the Series ended." +
-                                                                "leave blank if not yet finished: "));
-        String starActors = IO.readln("Enter the star actors of the Series: ");
+        try {
+            String title = IO.readln("Enter the title of the Series: ");
+            int episodes = Integer.parseInt(IO.readln("Enter the number of episodes in the Series: "));
+            int firstAired = Integer.parseInt(IO.readln("Enter the year the Series was first released: "));
+            Integer lastAired =  Integer.valueOf(IO.readln("Enter the year the Series ended." +
+                "leave blank if not yet finished: "));
+            String starActors = IO.readln("Enter the star actors of the Series: ");
 
-        //TODO:
-        //send information to create-method in Series class
+            Series series = new Series();
+            series.setTitle(title);
+            series.setEpisodes(episodes);
+            series.setFirstAired(firstAired);
+            series.setLastAired(lastAired);
+            series.setStarActors(starActors);
+
+            seriesService.create(series);
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input!");
+        }
     }
 
     private void listSeries() {
-        IO.println(Series.findAll(em));
+        IO.println(seriesService.findAll().stream());
     }
 
     private void listSpecificSeries() {
-        String title = IO.readln("Enter the title of the Series: ");
-        IO.println(Series.findByName(em, title));
+        String title = IO.readln("Enter the ID or title of the Series: ");
+        Series s;
+
+        try {
+            s = seriesService.findSeriesId(Long.valueOf(title));
+        } catch (NumberFormatException e) {
+            s= seriesService.findSeriesTitle(title);
+        }
+
+        IO.println("Title: " + s.getTitle() +
+            "\nDirector: " + s.getDirectors().stream() +
+            "\nEpisodes: " + s.getEpisodes() +
+            "\nFirst Aired: " + s.getFirstAired() +
+            "\nLast Aired: " + s.getLastAired() +
+            "\nStar Actors: " + s.getStarActors());
+
     }
 
     private void updateSeries() {
         IO.println("When prompted, enter the value you wish to update." +
             "If you don't want to change it, leave the input blank.");
-
+        Series series = new Series();
         String title = IO.readln("Enter the title of the Series: ");
-        Integer episodes = Integer.valueOf(IO.readln("Enter the number of episodes in the Series: "));
-        Integer firstAired = Integer.valueOf(IO.readln("Enter the year the Series was first released: "));
-        Integer lastAired =  Integer.valueOf(IO.readln("Enter the year the Series ended: "));
+        if (title != null && !title.isEmpty())
+            series.setTitle(title);
+        try {
+            int episodes = Integer.parseInt(IO.readln("Enter the number of episodes in the Series: "));
+            series.setEpisodes(episodes);
+        } catch (NumberFormatException _) {
+        }
+        try {
+            int firstAired = Integer.parseInt(IO.readln("Enter the year the Series was first released: "));
+            series.setFirstAired(firstAired);
+        } catch (NumberFormatException _) {
+        }
+        try {
+            Integer lastAired = Integer.valueOf(IO.readln("Enter the year the Series ended: "));
+            series.setLastAired(lastAired);
+        } catch (NumberFormatException _) {
+        }
         String starActors = IO.readln("Enter the star actors of the Series: ");
+        if (starActors != null && !starActors.isEmpty())
+            series.setStarActors(starActors);
 
-        //TODO:
-        //Determine which values aren't null, and update them
+        seriesService.update(series);
     }
 
 //    private void clearConsole() throws IOException, InterruptedException {
