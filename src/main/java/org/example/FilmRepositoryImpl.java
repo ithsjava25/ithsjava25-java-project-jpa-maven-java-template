@@ -6,8 +6,8 @@ import java.util.Optional;
 
 public class FilmRepositoryImpl extends BaseRepositoryImpl<Film> implements FilmRepository<Film> {
 
-    public FilmRepositoryImpl(EntityManagerFactory em) {
-        super(em.createEntityManager(), Film.class);
+    public FilmRepositoryImpl() {
+        super(Film.class);
     }
 
     @Override

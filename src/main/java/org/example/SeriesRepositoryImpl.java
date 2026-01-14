@@ -6,9 +6,14 @@ import java.util.Optional;
 
 public class SeriesRepositoryImpl extends BaseRepositoryImpl<Series> implements SeriesRepository<Series> {
 
-    public SeriesRepositoryImpl(EntityManagerFactory em) {
+    private final EntityManagerFactory emf;
 
-        super(em.createEntityManager(), Series.class);
+    public SeriesRepositoryImpl(EntityManagerFactory em) {
+        super(Series.class);
+        this.emf = em;
+    }
+
+
     }
 
     @Override
