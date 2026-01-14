@@ -19,11 +19,24 @@ public class Main {
 
          try (EntityManagerFactory emf = cfg.createEntityManagerFactory()) {
              emf.runInTransaction(em -> {
-                 DirectorRepositoryImpl directorRepository = new DirectorRepositoryImpl(emf);
-                 Director d = new Director();
-                 d.setName("John Doe");
-                 directorRepository.save(d);
+                 DirectorRepositoryImpl directorRepository = new DirectorRepositoryImpl(em);
+                 if (!directorRepository.findAll().iterator().hasNext()) {
+                     Director d = new Director();
+                     d.setName("John Doe");
+                     directorRepository.save(d);
+                 }
              });
-         }
+
+             DirectorRepositoryImpl directorRepository = new DirectorRepositoryImpl(em);
+             DirectorService directorService = new DirectorService(directorRepository);
+
+             FilmRepositoryImpl filmRepository = new FilmRepositoryImpl(em);
+             FilmService filmService = new FilmService(filmRepository);
+
+             SeriesRepositoryImpl seriesRepository = new SeriesRepositoryImpl(emf);
+             SeriesService seriesService = new SeriesService(seriesRepository);
+
+             CLI cli = new CLI();
+             cli.cliStart(directorService, filmService, seriesService);
     }
 }
