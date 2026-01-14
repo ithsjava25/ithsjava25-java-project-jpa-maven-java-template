@@ -9,31 +9,17 @@ public class TransactionHelper {
         this.em = em;
     }
 
-    public void beginTransaction() {
-        if (!em.getTransaction().isActive()) {
-            em.getTransaction().begin();
-        }
-    }
-
-    public void commitTransaction() {
-        if (em.getTransaction().isActive()) {
-            em.getTransaction().commit();
-        }
-    }
-
-    public void rollbackTransaction() {
-        if (em.getTransaction().isActive()) {
-            em.getTransaction().rollback();
-        }
-    }
-
     public void executeInTransaction(Runnable operation) {
+        var transaction = em.getTransaction();
         try {
-            beginTransaction();
+            transaction.begin();
             operation.run();
-            commitTransaction();
+            transaction.commit();
         } catch (Exception e) {
-            rollbackTransaction();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            System.err.println("Transaction failed: " + e.getMessage());
             throw e;
         }
     }

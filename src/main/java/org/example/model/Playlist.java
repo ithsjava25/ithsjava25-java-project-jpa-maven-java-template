@@ -32,10 +32,9 @@ public class Playlist {
     }
 
     public void removeSongBySongId(Long songId) {
-        entries.removeIf(entry -> entry.getSong() != null && songId.equals(entry.getSong().getId()));
+        entries.removeIf(entry -> songId.equals(entry.getSong().getId()));
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public String getName() { return name; }
     public LocalDateTime getCreatedAt() { return createdAt; }

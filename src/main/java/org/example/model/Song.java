@@ -9,7 +9,7 @@ public class Song {
     private Long id;
 
     private String title;
-    private int duration; // i sekunder
+    private int duration;
 
     @ManyToOne
     @JoinColumn(name = "album_id")
@@ -22,7 +22,6 @@ public class Song {
         this.duration = duration;
     }
 
-    // Get & Set
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

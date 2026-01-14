@@ -11,9 +11,11 @@ public class PlaylistSong {
     private Long id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "playlist_id", nullable = false)
     private Playlist playlist;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "song_id", nullable = false)
     private Song song;
 
     private int position;
@@ -27,25 +29,10 @@ public class PlaylistSong {
         this.position = position;
         this.addedAt = LocalDateTime.now();
     }
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
 
-    public Playlist getPlaylist() {
-        return playlist;
-    }
-
-    public Song getSong() {
-        return song;
-    }
-
-    public int getPosition() {
-        return position;
-    }
-
-    public LocalDateTime getAddedAt() {
-        return addedAt;
-    }
-
+    public Long getId() { return id; }
+    public Playlist getPlaylist() { return playlist; }
+    public Song getSong() { return song; }
+    public int getPosition() { return position; }
+    public LocalDateTime getAddedAt() { return addedAt; }
 }

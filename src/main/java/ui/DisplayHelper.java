@@ -1,4 +1,4 @@
-package org.example.ui;  // eller org.example.UI
+package org.example.ui;
 
 import org.example.model.Artist;
 import org.example.model.Album;
@@ -41,7 +41,7 @@ public class DisplayHelper {
                 a.getId(),
                 truncate(a.getTitle(), 23),
                 truncate(a.getArtist().getName(), 18),
-                a.getYear());  // ÄNDRA HÄR: getYear() istället för getReleaseYear()
+                a.getReleaseYear());
         }
     }
 

@@ -1,8 +1,8 @@
 package persistence.repository;
 
 import org.example.model.Album;
-import org.example.model.Artist;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.util.List;
 
 public class AlbumRepository {
@@ -13,8 +13,16 @@ public class AlbumRepository {
     }
 
     public Album save(Album album) {
-        em.persist(album);
-        return album;
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            em.persist(album);
+            transaction.commit();
+            return album;
+        } catch (Exception e) {
+            if (transaction.isActive()) transaction.rollback();
+            throw e;
+        }
     }
 
     public Album findById(Long id) {
@@ -29,5 +37,23 @@ public class AlbumRepository {
         return em.createQuery("SELECT a FROM Album a WHERE a.artist.id = :artistId", Album.class)
             .setParameter("artistId", artistId)
             .getResultList();
+    }
+
+    public boolean deleteAlbum(Long id) {
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            Album album = em.find(Album.class, id);
+            if (album != null) {
+                em.remove(album);
+                transaction.commit();
+                return true;
+            }
+            transaction.rollback();
+            return false;
+        } catch (Exception e) {
+            if (transaction.isActive()) transaction.rollback();
+            return false;
+        }
     }
 }

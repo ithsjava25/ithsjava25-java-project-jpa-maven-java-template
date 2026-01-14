@@ -2,6 +2,7 @@ package persistence.repository;
 
 import org.example.model.Song;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.util.List;
 
 public class SongRepository {
@@ -12,8 +13,16 @@ public class SongRepository {
     }
 
     public Song save(Song song) {
-        em.persist(song);
-        return song;
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            em.persist(song);
+            transaction.commit();
+            return song;
+        } catch (Exception e) {
+            if (transaction.isActive()) transaction.rollback();
+            throw e;
+        }
     }
 
     public Song findById(Long id) {
@@ -31,14 +40,19 @@ public class SongRepository {
     }
 
     public boolean deleteSong(Long id) {
+        EntityTransaction transaction = em.getTransaction();
         try {
-            Song song = findById(id);
+            transaction.begin();
+            Song song = em.find(Song.class, id);
             if (song != null) {
                 em.remove(song);
+                transaction.commit();
                 return true;
             }
+            transaction.rollback();
             return false;
         } catch (Exception e) {
+            if (transaction.isActive()) transaction.rollback();
             return false;
         }
     }

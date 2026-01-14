@@ -21,7 +21,6 @@ public class Artist {
         this.name = name;
     }
 
-    // Get & Set
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

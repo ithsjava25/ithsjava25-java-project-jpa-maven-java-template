@@ -9,7 +9,7 @@ public class InputValidator {
             System.out.print(prompt);
             try {
                 int value = scanner.nextInt();
-                scanner.nextLine(); // Rensa newline
+                scanner.nextLine();
 
                 if (value >= min && value <= max) {
                     return value;
@@ -18,7 +18,7 @@ public class InputValidator {
                 }
             } catch (Exception e) {
                 System.out.println("❌ Ogiltigt nummer. Försök igen.");
-                scanner.nextLine(); // Rensa felaktig input
+                scanner.nextLine();
             }
         }
     }
@@ -28,11 +28,11 @@ public class InputValidator {
             System.out.print(prompt);
             try {
                 long value = scanner.nextLong();
-                scanner.nextLine(); // Rensa newline
+                scanner.nextLine();
                 return value;
             } catch (Exception e) {
                 System.out.println("❌ Ogiltigt nummer. Försök igen.");
-                scanner.nextLine(); // Rensa felaktig input
+                scanner.nextLine();
             }
         }
     }

@@ -2,6 +2,7 @@ package persistence.repository;
 
 import org.example.model.Artist;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.util.List;
 
 public class ArtistRepository {
@@ -12,8 +13,16 @@ public class ArtistRepository {
     }
 
     public Artist save(Artist artist) {
-        em.persist(artist);
-        return artist;
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            em.persist(artist);
+            transaction.commit();
+            return artist;
+        } catch (Exception e) {
+            if (transaction.isActive()) transaction.rollback();
+            throw e;
+        }
     }
 
     public Artist findById(Long id) {
@@ -25,14 +34,19 @@ public class ArtistRepository {
     }
 
     public boolean deleteArtist(Long id) {
+        EntityTransaction transaction = em.getTransaction();
         try {
-            Artist artist = findById(id);
+            transaction.begin();
+            Artist artist = em.find(Artist.class, id);
             if (artist != null) {
                 em.remove(artist);
+                transaction.commit();
                 return true;
             }
+            transaction.rollback();
             return false;
         } catch (Exception e) {
+            if (transaction.isActive()) transaction.rollback();
             return false;
         }
     }
