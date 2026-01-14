@@ -17,34 +17,13 @@ public class Main {
             .property("hibernate.highlight_sql", "true")
             .managedClasses(Film.class, Director.class, Series.class);
 
-        try (EntityManagerFactory emf = cfg.createEntityManagerFactory()) {
-
-            emf.runInTransaction(em -> {
-
-
-
-
-                try {
-                    
-                    DirectorRepositoryImpl directorRepository = new DirectorRepositoryImpl(emf);
-                    Director d = new Director();
-                    d.setName("John Doe");
-
-                    directorRepository.save(d);
-
-                    em.getTransaction().commit();
-
-                } catch (Exception e) {
-                    System.err.println("Error: " + e.getMessage());
-                    throw e;
-                }
-
-            });
-
-        }
+         try (EntityManagerFactory emf = cfg.createEntityManagerFactory()) {
+             emf.runInTransaction(em -> {
+                 DirectorRepositoryImpl directorRepository = new DirectorRepositoryImpl(emf);
+                 Director d = new Director();
+                 d.setName("John Doe");
+                 directorRepository.save(d);
+             });
+         }
     }
-
-
-
-
 }

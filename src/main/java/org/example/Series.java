@@ -8,7 +8,7 @@ import java.util.Set;
 @Entity
 public class Series extends BaseEntity{
 
-    private Long id;
+
 
     @ManyToMany
         (mappedBy = "series", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
@@ -82,16 +82,16 @@ public class Series extends BaseEntity{
         return starActors;
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (!(o instanceof Series)) return false;
-//        Series other = (Series) o;
-//        return id != null && id.equals(other.id);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return 31;
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Series)) return false;
+        Series other = (Series) o;
+        return getId() != null && getId().equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
 }
