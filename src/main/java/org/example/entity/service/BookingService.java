@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.entity.service;
 
 import jakarta.persistence.EntityManagerFactory;
 import org.example.entity.*;
@@ -68,12 +68,13 @@ public class BookingService {
                         "WHERE b.table.id = :tableId " +
                         "AND b.date = :date " +
                         "AND b.timeSlot.id = :timeSlotId " +
-                        "AND b.status != 'CANCELLED'",
+                        "AND b.status != :cancelledStatus",
                     Long.class
                 )
                 .setParameter("tableId", tableId)
                 .setParameter("date", date)
                 .setParameter("timeSlotId", timeSlotId)
+                .setParameter("cancelledStatus", BookingStatus.CANCELLED)
                 .getSingleResult();
 
             if (existingBookings > 0) {
@@ -153,6 +154,7 @@ public class BookingService {
                 case CONFIRMED -> booking.confirmBooking();
                 case CANCELLED -> booking.cancelBooking();
                 case COMPLETED -> booking.completeBooking();
+                case PENDING -> booking.pendingBooking();
                 case NO_SHOW -> booking.noShowBooking();
             }
 

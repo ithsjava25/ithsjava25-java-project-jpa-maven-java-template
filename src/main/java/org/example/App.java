@@ -5,7 +5,7 @@ import io.github.classgraph.ScanResult;
 import jakarta.persistence.*;
 import org.example.entity.*;
 import org.example.entity.Table;
-import org.example.service.BookingService;
+import org.example.entity.service.BookingService;
 import org.hibernate.jpa.HibernatePersistenceConfiguration;
 
 import java.time.LocalDate;
@@ -20,8 +20,8 @@ public class App {
 
         final PersistenceConfiguration cfg = new HibernatePersistenceConfiguration("emf")
             .jdbcUrl("jdbc:mysql://localhost:3306/restaurant_booking")
-            .jdbcUsername("root")
-            .jdbcPassword("root123")
+            .jdbcUsername(System.getenv("MYSQL_USER"))
+            .jdbcPassword(System.getenv("MYSQL_ROOT_PASSWORD"))
             .property("hibernate.connection.provider_class", "org.hibernate.hikaricp.internal.HikariCPConnectionProvider")
             .property("hibernate.hikari.maximumPoolSize", "10")
             .property("hibernate.hikari.minimumIdle", "5")
