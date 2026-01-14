@@ -19,11 +19,12 @@ public class Director extends BaseEntity{
     )
     private Set<Film> films = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany( cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
                 name = "director_series",
-                joinColumns = @JoinColumn(name = "director_id"),
+                joinColumns = @JoinColumn(name = "directors_id"),
                 inverseJoinColumns = @JoinColumn(name = "series_id"))
+
     private Set<Series> series = new HashSet<>();
 
     private String name;
@@ -36,6 +37,10 @@ public class Director extends BaseEntity{
     private Integer yearOfDeath;
 
 
+
+    public Set<Series> getSeries() {
+        return series;
+    }
 
     public Set<Film> getFilms() {
         return films;

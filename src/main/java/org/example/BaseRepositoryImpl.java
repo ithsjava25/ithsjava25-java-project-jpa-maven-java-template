@@ -10,22 +10,25 @@ public class BaseRepositoryImpl<T extends org.example.BaseEntity> implements Rep
     protected Class<T> entityClass;
 
 
-    public BaseRepositoryImpl(EntityManager em, Class<T> entityClass) {
-        this.em = em;
+    public BaseRepositoryImpl(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 
+    public void setEntityManager(EntityManager em) {
+        this.em = em;
+    }
 
+
+
+    @Override
     public T save(T entity) {
         if (entity == null) {
-
                 throw new IllegalArgumentException("Entity cannot be null");
             }
             if (entity.getId() == null) {
                 em.persist(entity);
                 return entity;
-            }
-        else {
+            } else {
             return em.merge(entity);
         }
     }

@@ -8,10 +8,7 @@ import java.util.Set;
 @Entity
 public class Series extends BaseEntity{
 
-
-
-    @ManyToMany
-        (mappedBy = "series", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "series", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Director> directors = new HashSet<>();
 
     private String title;
@@ -51,12 +48,6 @@ public class Series extends BaseEntity{
 
         this.starActors = starActors;
     }
-
-
-
-
-
-
 
     public String getTitle() {
         return title;
