@@ -16,14 +16,18 @@ public class FilmService {
         filmRepository.save(film);
     }
 
-    public FilmDTO find(Long id) {
+    public Iterable<Film> findAll() {
+        return filmRepository.findAll();
+
+    }
+
+    public Film findFilmId(Long id) {
         return filmRepository.findById(id)
-            .map(f -> new FilmDTO(f.getTitle()))
             .orElseThrow(() -> new RuntimeException("Film not found: " + id));
     }
 
-    public Film findFilm(Long id) {
-        return filmRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Film not found: " + id));
+    public Film findFilmTitle(String title) {
+        return filmRepository.findByTitle(title)
+            .orElseThrow(() -> new RuntimeException("Film not found: " + title));
     }
 }

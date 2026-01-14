@@ -137,7 +137,7 @@ public class CLI {
         } catch (NumberFormatException _) {
         }
 
-        Director updatedDirector = directorService.findDirector(id);
+        Director updatedDirector = directorService.findDirectorId(id);
         if(name != null && !name.isEmpty())
             updatedDirector.setName(name);
         if(country != null && !country.isEmpty())
@@ -180,7 +180,7 @@ public class CLI {
         try {
             Film film = new Film();
             film.setTitle(title);
-            film.setDirector(directorService.findDirector(Long.valueOf(IO.readln("Enter the ID of the Director: "))));
+            film.setDirector(directorService.findDirectorId(Long.valueOf(IO.readln("Enter the ID of the Director: "))));
             filmService.create(film);
         } catch (NumberFormatException e) {
             System.out.println("Invalid input!");
@@ -208,12 +208,12 @@ public class CLI {
         try {
             IO.println("When prompted, enter the value you wish to update." +
                 "\nIf you don't want to change it, leave the input blank.");
-            Film film = filmService.findFilm(Long.valueOf(IO.readln("Enter the ID of the Film: ")));
+            Film film = filmService.findFilmId(Long.valueOf(IO.readln("Enter the ID of the Film: ")));
             String title = IO.readln("Enter the title of the Film: ");
             if(title != null && !title.isEmpty())
                 film.setTitle(title);
             try {
-                Director director = directorService.findDirector(Long.valueOf(IO.readln("Enter the ID of the Director: ")));
+                Director director = directorService.findDirectorId(Long.valueOf(IO.readln("Enter the ID of the Director: ")));
                 film.setDirector(director);
             } catch (NumberFormatException _) {
             }

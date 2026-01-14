@@ -54,7 +54,7 @@ public class DirectorService {
         directorRepository.delete(director);
     }
 
-    public Director findDirector(Long id) {
+    public Director findDirectorId(Long id) {
         //Old code
 //        Director director = (Director) directorRepository.findById(id)
 //            .orElseThrow();
@@ -64,7 +64,16 @@ public class DirectorService {
         return directorRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Director not found: " + id));
     }
+
+    public Director findDirectorName(String name) {
+        return directorRepository.findByName(name)
+            .orElseThrow(() -> new RuntimeException("Director not found: " + name));
+    }
 }
+
+
+
+
     //    public DirectorDTO find(Long id) {
 //        return directorRepository.findById(id)
 //            .map(d -> new DirectorDTO(d.getName(), d.getCountry()))

@@ -23,14 +23,18 @@ public class SeriesService {
         seriesRepository.save(series);
     }
 
-    public SeriesDTO find(Long id) {
+    public Iterable<Series> findAll() {
+        return seriesRepository.findAll();
+
+    }
+
+    public Series findSeriesId(Long id) {
         return seriesRepository.findById(id)
-            .map(SeriesDTO::new)
             .orElseThrow(() -> new RuntimeException("Series not found: " + id));
     }
 
-    public Series findSeries(Long id) {
-        return seriesRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Series not found: " + id));
+    public Series findSeriesTitle(String title) {
+        return seriesRepository.findByTitle(title)
+            .orElseThrow(() -> new RuntimeException("Series not found: " + title));
     }
 }
