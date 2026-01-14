@@ -12,7 +12,7 @@
             <property name="jakarta.persistence.jdbc.user" value="user"/>
             <property name="jakarta.persistence.jdbc.password" value="password"/>
             <!-- Automatically export the schema -->
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/> <!-- Use validate instead of update? -->
 
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
