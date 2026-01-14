@@ -24,11 +24,28 @@ public class DirectorService {
         directorRepository.save(director);
     }
 
-    public DirectorDTO find(Long id) {
-        return directorRepository.findById(id)
-            .map(d -> new DirectorDTO(d.getName(), d.getCountry()))
+    public Director update(Long id, Director director) {
+        Director existingDirector = directorRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Director not found"));
+
+
+        existingDirector.setYearOfDeath(director.getYearOfDeath());
+        existingDirector.setCountry(director.getCountry());
+        existingDirector.setBirthYear(director.getBirthYear());
+        existingDirector.setName(director.getName());
+
+        for (Film film : director.getFilms()) {
+            existingDirector.addFilm(film);
+        }
+        return directorRepository.save(existingDirector);
     }
+
+
+    public Iterable<Director> findAll() {
+        return directorRepository.findAll();
+
+    }
+
 
     public void delete(Long id) {
         Director director = directorRepository.findById(id)
@@ -48,3 +65,8 @@ public class DirectorService {
             .orElseThrow(() -> new RuntimeException("Director not found: " + id));
     }
 }
+    //    public DirectorDTO find(Long id) {
+//        return directorRepository.findById(id)
+//            .map(d -> new DirectorDTO(d.getName(), d.getCountry()))
+//            .orElseThrow(() -> new RuntimeException("Director not found"));
+//    }
