@@ -1,0 +1,7 @@
+CREATE DATABASE IF NOT EXISTS musicdb;
+USE musicdb;
+
+
+CREATE USER IF NOT EXISTS 'musicuser'@'%' IDENTIFIED BY 'musicpass';
+GRANT ALL PRIVILEGES ON musicdb.* TO 'musicuser'@'%';
+FLUSH PRIVILEGES;
